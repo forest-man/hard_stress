@@ -22,8 +22,10 @@ if [ $# != 1 ]
   read start	  
 fi
 
+
+
 function cpu_eat {
-  echo_green "###CPU_EAT###\nPlease select test case:\n1-ONE core 100% CPU consumption\n2-ALL cores 100% CPU consumption(Handle with care)"
+  echo_green "###CPU_EAT###\nPlease select test case:\n1-ONE core 100% CPU consumption\n2-ALL cores 100% CPU consumption (Handle with care)"
   read cpu
   if [[ "$cpu" == "1" ]]; then
     taskset -c 1 ./cpu_eat.py
