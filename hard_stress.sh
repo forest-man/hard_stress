@@ -18,8 +18,8 @@ function echo_yellow {
 }
 
 if [ $# != 1 ]
-  then echo_green "Please choose required test: \n1-CPU eat\n2-Memory eat\n3-Diskspace eat"
-  exit;
+  then echo_green "Please choose required testcase: \n1 - CPU eat\n2 - Memory eat\n3 - Discspace eat"
+  read start	  
 fi
 
 function cpu_eat {
@@ -39,13 +39,10 @@ function mem_eat {
 
 }
 
+#function dame {
+#
 
-
-
-
-
-
-
+#}
 
 
 function main {
@@ -58,10 +55,5 @@ function main {
   fi
 }
 
-
-
-
-
-
-main $1
+main $start
 
