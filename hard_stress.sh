@@ -25,7 +25,7 @@ fi
 
 
 function cpu_eat {
-  echo_green "###CPU_EAT###\nPlease select test case:\n1-ONE core 100% CPU consumption\n2-ALL cores 100% CPU consumption (Handle with care)"
+  echo_green "### CPU eat ###\nPlease select test case:\n1-ONE core 100% CPU consumption\n2-ALL cores 100% CPU consumption (Handle with care)"
   read cpu
   if [[ "$cpu" == "1" ]]; then
     taskset -c 1 ./cpu_eat.py
@@ -37,14 +37,31 @@ function cpu_eat {
 
 
 function mem_eat {
-  ./mem_eat.py
+  echo_green "### Memory eat ###\nThe script will start to consume free RAM. \nPress Enter to commence the test...\n"
+  read
+  ./mem_eat.py > /dev>null 2>&1 &
 
 }
 
-#function dame {
-#
+function dame {
+  echo_green "### Discspace eat ###\nThe script will create directory named \"eat\" and start to consume discspace in intensive way by store in this directory files with constant growing size.\nPress Enter to commence the test...\nPress s to stop the test"
+  read
+  mkdir ./eat
+  `./dame ed eat/` > /dev>null &
+  while true
+    do
+      df -h | awk '$NF=="/"{printf "Disk Usage: (%s)\n", $5}'
+      sleep 1
+    done    
+  read stop
+  if [[ "$stop" == "s" ]]; then
+    pkill -f dame
+  elif [[ "$cpu" == "2" ]]; then
+    echo "ALL cores"
+  fi
 
-#}
+
+}
 
 
 function main {
@@ -53,7 +70,7 @@ function main {
   elif [[ "$1" == "2" ]]; then
     mem_eat
   elif [[ "$1" == "3" ]]; then
-    echo "number three"
+    dame
   fi
 }
 
