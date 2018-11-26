@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 function echo_blue {
     echo -e "\e[34m $1\e[39m"
 }
@@ -22,8 +23,19 @@ if [ $# != 1 ]
 fi
 
 function cpu_eat {
-	echo_green "###CPU_EAT###\nPlease select test case:\n1-ONE core 100% CPU consumption\n2-ALL cores 100% CPU consumption(Handle with care)"
-  #taskset -c $1 ./cpu_eat.py
+  echo_green "###CPU_EAT###\nPlease select test case:\n1-ONE core 100% CPU consumption\n2-ALL cores 100% CPU consumption(Handle with care)"
+  read cpu
+  if [[ "$cpu" == "1" ]]; then
+    taskset -c 1 ./cpu_eat.py
+  elif [[ "$cpu" == "2" ]]; then
+    echo "ALL cores"
+  fi
+}
+
+
+
+function mem_eat {
+  ./mem_eat.py
 
 }
 
@@ -36,15 +48,13 @@ function cpu_eat {
 
 
 
-
 function main {
   if [[ "$1" == "1" ]]; then
-    cpu_eat
-   elif [[ "$1" == "2" ]]; then
-      echo "number two"
-   elif [[ "$1" == "3" ]]; then
-      echo "number three"
-
+    cpu_eat 
+  elif [[ "$1" == "2" ]]; then
+    mem_eat
+  elif [[ "$1" == "3" ]]; then
+    echo "number three"
   fi
 }
 
