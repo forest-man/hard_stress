@@ -1,2 +1,3 @@
 1. System live monitoring
-2. End subscript without kill the main script
+2. End subscript without kill the main script (while dame) and automatically delete eat/ directory when script is stopped
+3. Add easy way to exit cpu consumption script
