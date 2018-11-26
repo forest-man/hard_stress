@@ -44,23 +44,15 @@ function mem_eat {
 }
 
 function dame {
-  echo_green "### Discspace eat ###\nThe script will create directory named \"eat\" and start to consume discspace in intensive way by store in this directory files with constant growing size.\nPress Enter to commence the test...\nPress s to stop the test"
+  echo_green "### Discspace eat ###\nThe script will create directory named \"eat\" and start to consume discspace in intensive way by store in this directory files with constant growing size.\nPress Enter to commence the test...\nPress \"Ctrl+x\" to stop the test"
   read
   mkdir ./eat
   `./dame ed eat/` > /dev>null &
-  while true
+   while true
     do
-      df -h | awk '$NF=="/"{printf "Disk Usage: (%s)\n", $5}'
+      df  | awk '$NF=="/"{printf "Filesystem: %s | Used: %s | Available: %s | Disc Usage: %s\r",$1,$3,$4,$5}'&
       sleep 1
-    done    
-  read stop
-  if [[ "$stop" == "s" ]]; then
-    pkill -f dame
-  elif [[ "$cpu" == "2" ]]; then
-    echo "ALL cores"
-  fi
-
-
+    done
 }
 
 
