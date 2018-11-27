@@ -28,6 +28,10 @@ function control_c_dame {
     exit $?
 }
 
+function control_c_mem {
+    echo_yellow "\nThe test was stopped, all occupied RAM was cleared.\n"
+    exit $?
+}
 
 function cpu_eat {
   echo_green "### CPU eat ###\nPlease select test case:\n1-ONE core 100% CPU consumption\n2-ALL cores 100% CPU consumption (Handle with care)"
@@ -39,16 +43,16 @@ function cpu_eat {
   fi
 }
 
-
-
 function mem_eat {
-  echo_green "### Memory eat ###\nThe script will start to consume free RAM. \nPress Enter to commence the test...\n"
+  echo_green "### Memory eat ###\nThe script will start to consume free RAM. \nPress Enter to commence the test...\nPress \"Ctrl+c\" to stop the test"
   read
-  ./mem_eat.py > /dev>null 2>&1 &
-
+  `./mem_eat.py` > /dev>null &  
+  while trap control_c_mem SIGINT
+    do
+      free -m | awk 'NR==2{printf "Total: %s | Used: %s | Percent of usage: %.2f%%\t\t\r",$2, $3,  $3*100/$2 }'
+      sleep 0.5
+    done
 }
-
-
 
 function dame {
   echo_green "### Discspace eat ###\nThe script will create directory named \"eat\" and start to consume discspace in intensive way by store in this directory files with constant growing size.\nPress Enter to commence the test...\nPress \"Ctrl+c\" to stop the test"
