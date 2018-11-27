@@ -34,10 +34,38 @@ function control_c_mem {
 }
 
 function cpu_eat {
-  echo_green "### CPU eat ###\nPlease select test case:\n1-ONE core 100% CPU consumption\n2-ALL cores 100% CPU consumption (Handle with care)"
+  echo_green "### CPU eat ###\nPlease select test case:\n1-ONE core 100% CPU consumption (Cpu1)\n2-ALL cores 100% CPU consumption (Handle with care)"
   read cpu
   if [[ "$cpu" == "1" ]]; then
-    taskset -c 1 ./cpu_eat.py
+    `taskset -c 1 ./cpu_eat.py` > /dev>null &
+    PREV_TOTAL=0
+    PREV_IDLE=0
+
+    while true; do
+      # Get the total CPU statistics, discarding the 'cpu ' prefix.
+      CPU=(`sed -n 's/^cpu1\s//p' /proc/stat`)
+      IDLE=${CPU[3]} # Just the idle CPU time.
+
+      # Calculate the total CPU time.
+      TOTAL=0
+      for VALUE in "${CPU[@]}"; do
+        let "TOTAL=$TOTAL+$VALUE"
+      done
+
+      # Calculate the CPU usage since we last checked.
+      let "DIFF_IDLE=$IDLE-$PREV_IDLE"
+      let "DIFF_TOTAL=$TOTAL-$PREV_TOTAL"
+      let "DIFF_USAGE=(1000*($DIFF_TOTAL-$DIFF_IDLE)/$DIFF_TOTAL+5)/10"
+      echo -en "\rCPU: $DIFF_USAGE%  \b\b"
+
+      # Remember the total and idle CPU times for the next check.
+      PREV_TOTAL="$TOTAL"
+      PREV_IDLE="$IDLE"
+
+      # Wait before checking again.
+      sleep 1
+    done
+
   elif [[ "$cpu" == "2" ]]; then
     echo "ALL cores"
   fi
