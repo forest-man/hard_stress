@@ -22,11 +22,12 @@ if [ $# != 1 ]
   read start	  
 fi
 
-function control_c {
+function control_c_dame {
     echo_yellow "\nThe test was stopped, all occupied discspace was cleared.\n"
     rm -rf eat/
     exit $?
 }
+
 
 function cpu_eat {
   echo_green "### CPU eat ###\nPlease select test case:\n1-ONE core 100% CPU consumption\n2-ALL cores 100% CPU consumption (Handle with care)"
@@ -54,7 +55,7 @@ function dame {
   read
   mkdir ./eat
   `./dame ed eat/` > /dev>null &
-   while trap control_c SIGINT 
+   while trap control_c_dame SIGINT 
     do
       df  | awk '$NF=="/"{printf "Filesystem: %s | Used: %s | Available: %s | Disc Usage: %s\r",$1,$3,$4,$5}'&
       sleep 0.5
