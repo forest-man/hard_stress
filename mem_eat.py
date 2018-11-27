@@ -7,3 +7,5 @@ while True:
         a.append(' ' * 100)
     except MemoryError:
         time.sleep(0.01)
+#  print("Hello")
+#  time.sleep(1)
