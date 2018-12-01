@@ -80,10 +80,10 @@ function cpu_eat {
   elif [[ "$cpu" == "2" ]]; then
     echo "ALL cores"
     nums=`grep -c cpu /proc/stat`
-    cpus= `echo expr $nums - 2`
-    
-    echo `seq 0 $cpus`
-#    echo $(seq $cpus $END)
+    cpus=`expr $nums - 2`
+    echo $cpus 
+    count=`echo $(seq $cpus)`
+    `taskset -c $cpus ./cpu_eat.py`
   fi
 }
 
