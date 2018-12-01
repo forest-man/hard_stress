@@ -1,6 +1,9 @@
 #!/bin/bash
 
+# Ultimate script for testing CPU, RAM and disc space consumption.
 
+
+# Color echo functions
 function echo_blue {
     echo -e "\e[34m $1\e[39m"
 }
@@ -17,11 +20,17 @@ function echo_yellow {
   echo -e "\e[33m[$1\e[39m"
 }
 
+
+
+
+
 if [ $# != 1 ]
   then echo_green "Please choose required testcase: \n1 - CPU eat\n2 - Memory eat\n3 - Discspace eat"
   read start	  
 fi
 
+
+# For neat interrupting script execution
 function control_c_dame {
     echo_yellow "\nThe test was stopped, all occupied discspace was cleared.\n"
     rm -rf eat/
@@ -33,6 +42,7 @@ function control_c_mem {
     exit $?
 }
 
+
 function cpu_eat {
   echo_green "### CPU eat ###\nPlease select test case:\n1-ONE core 100% CPU consumption (Cpu1)\n2-ALL cores 100% CPU consumption (Handle with care)"
   read cpu
@@ -41,6 +51,7 @@ function cpu_eat {
     PREV_TOTAL=0
     PREV_IDLE=0
 
+# Intended for nice percent consumption statistic
     while true; do
       # Get the total CPU statistics, discarding the 'cpu ' prefix.
       CPU=(`sed -n 's/^cpu1\s//p' /proc/stat`)
@@ -71,6 +82,7 @@ function cpu_eat {
   fi
 }
 
+# Eating memory sith stats
 function mem_eat {
   echo_green "### Memory eat ###\nThe script will start to consume free RAM. \nPress Enter to commence the test...\nPress \"Ctrl+c\" to stop the test"
   read
@@ -82,6 +94,8 @@ function mem_eat {
     done
 }
 
+
+# Dame execution with stats and removing 'eat' directory after execution
 function dame {
   echo_green "### Discspace eat ###\nThe script will create directory named \"eat\" and start to consume discspace in intensive way by store in this directory files with constant growing size.\nPress Enter to commence the test...\nPress \"Ctrl+c\" to stop the test"
   read

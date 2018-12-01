@@ -1,5 +1,5 @@
 1. System live monitoring (applied for disc eat, and for mem eat, for cpu eat) (Done)
 2. End subscript without kill the main script (while dame) and automatically delete eat/ directory when script is stopped (done)
 3. Add easy way to exit cpu consumption script and main hard_stress script
-4. Add comments in every script
+4. Add comments in every script (done)
 5. Add Multitreading CPU consumption test
