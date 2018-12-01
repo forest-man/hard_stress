@@ -47,8 +47,7 @@ function cpu_eat {
   echo_green "### CPU eat ###\nPlease select test case:\n1-ONE core 100% CPU consumption (Cpu1)\n2-ALL cores 100% CPU consumption (Handle with care)"
   read cpu
   if [[ "$cpu" == "1" ]]; then
-    `taskset -c 1 ./cpu_eat.py` > /dev>null &
-    PREV_TOTAL=0
+    `taskset -c 1 ./cpu_eat.py` > /dev>null & PREV_TOTAL=0
     PREV_IDLE=0
 
 # Intended for nice percent consumption statistic
@@ -67,7 +66,7 @@ function cpu_eat {
       let "DIFF_IDLE=$IDLE-$PREV_IDLE"
       let "DIFF_TOTAL=$TOTAL-$PREV_TOTAL"
       let "DIFF_USAGE=(1000*($DIFF_TOTAL-$DIFF_IDLE)/$DIFF_TOTAL+5)/10"
-      echo -en "\rCPU: $DIFF_USAGE%  \b\b"
+      echo -en "\rCpu1 percent of usage: $DIFF_USAGE%  \b\b"
 
       # Remember the total and idle CPU times for the next check.
       PREV_TOTAL="$TOTAL"
@@ -77,8 +76,14 @@ function cpu_eat {
       sleep 1
     done
 
+# Counting nums of CPUs to intend all - 1 CPUs capacity
   elif [[ "$cpu" == "2" ]]; then
     echo "ALL cores"
+    nums=`grep -c cpu /proc/stat`
+    cpus= `echo expr $nums - 2`
+    
+    echo `seq 0 $cpus`
+#    echo $(seq $cpus $END)
   fi
 }
 
