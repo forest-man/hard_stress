@@ -81,9 +81,10 @@ function cpu_eat {
     echo "ALL cores"
     nums=`grep -c cpu /proc/stat`
     cpus=`expr $nums - 2`
-    echo $cpus 
-    count=`echo $(seq $cpus)`
-    `taskset -c $cpus ./cpu_eat.py`
+    n=`eval seq -s, 1 $cpus`
+#    echo $n
+#    count=`echo $(seq $cpus)`
+    `taskset -c $n ./cpu_eat.py`  
   fi
 }
 
