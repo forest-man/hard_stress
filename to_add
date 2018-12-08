@@ -3,3 +3,4 @@
 3. Add easy way to exit cpu consumption script and main hard_stress script
 4. Add comments in every script (done)
 5. Add Multitreading CPU consumption test (done, but make a live stats)
+6. Main - Merge into one script - Implement mode selection via cli keys(-m memory, -c cpu)
