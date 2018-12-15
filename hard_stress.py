@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 import time
 import argparse
 import subprocess
@@ -7,8 +8,6 @@ from multiprocessing import Pool
 from multiprocessing import cpu_count
 
 
-def help():
-    print("Please choose desired test")
 def f(x):
     while True:
         x * x
@@ -34,20 +33,18 @@ def mem_eat():
             time.sleep(0.01)
 
 
-try:
-    x = input("Choose desired test:\n 1 - CPU eat \n 2 - Memory eat \n 3 - Discspace consumption\n")
-except SyntaxError:
-    x = None
+parser = argparse.ArgumentParser()
+subparsers = parser.add_subparsers()
 
 
-if x == 1:
-    print("CPU_eat")
+parser_cpu_eat = subparsers.add_parser('c', help='Consume CPU')
+parser_cpu_eat.set_defaults(func=cpu_eat)
 
-elif x == 2:
-    print("mem_eat")
-elif x == 3:
-    print("disk_eat")
-elif x is None:
-    help()
-    #cpu_eat()
+if len(sys.argv) <= 1:
+    sys.argv.append('--help')
+
+options = parser.parse_args()
+
+# Run the appropriate function (in this case showtop20 or listapps)
+options.func()
 
