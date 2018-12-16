@@ -4,3 +4,4 @@
 4. Add comments in every script (done)
 5. Add Multitreading CPU consumption test (done, but make a live stats)
 6. Main - Merge into one script - Implement mode selection via cli keys(-m memory, -c cpu)
+7. Implement pseudo dame file as a function
