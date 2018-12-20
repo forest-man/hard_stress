@@ -35,7 +35,7 @@ def mem_eat():
 
 # When consuming is started a file named 'd' is created in . directory and started to growing.
 def dame():
-    write_str = "!"*2048*2048*50  # Consume amount
+    write_str = "Full_space"*2048*2048*50  # Consume amount
 
     output_path = sys.argv[1]
 
