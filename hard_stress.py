@@ -33,7 +33,7 @@ def cpu_eat_one():
         processes = cpu_count()
         print('-' * 20)
         print('Running load on CPU')
-        print('Utilizing %d cores' % processes)
+        print('Utilizing 1 core')
         print('-' * 20)
         pool = mp.Pool(processes=1)
         pool.map(f, range(processes))
