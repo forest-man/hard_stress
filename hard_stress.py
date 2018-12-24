@@ -8,6 +8,7 @@ import time
 import errno
 import argparse
 import subprocess
+import multiprocessing as mp
 from multiprocessing import Pool
 from multiprocessing import cpu_count
 from argparse import RawTextHelpFormatter
@@ -34,7 +35,7 @@ def cpu_eat_one():
         print('Running load on CPU')
         print('Utilizing %d cores' % processes)
         print('-' * 20)
-        pool = Pool(processes)
+        pool = mp.Pool(processes=1)
         pool.map(f, range(processes))
 
 
