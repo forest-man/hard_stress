@@ -16,7 +16,7 @@ def f(x):
     while True:
         x * x
 
-# CPU consumption tool doesn't work properly yet (need to make multi/one CPU consumption thingy with nice proc stop mechanism)
+# CPU consumption tool doesn't work properly yet (need to make multi/one CPU core consumption thingy with nice proc stop mechanism)
 def cpu_eat_all():
     if __name__ == '__main__':
         processes = cpu_count()
@@ -74,7 +74,7 @@ parser = argparse.ArgumentParser(
         description="Universal script for testing CPU, RAM and discspace consumption. \nPlease choose required optional argument.",
         epilog="",formatter_class=argparse.RawTextHelpFormatter)
 
-parser.add_argument("-c","--cpu", help="Consume all CPU. \nChoises are: \n    'a' - for all CPUs consumption \n    'o' - for one CPU consumption", choices=['a','o'])
+parser.add_argument("-c","--cpu", help="Consume all CPU. \nChoises are: \n    'a' - for all CPU cores consumption \n    'o' - for one CPU core consumption", choices=['a','o'])
 parser.add_argument("-m","--memory", help="Consume all memory.", action="store_true")
 parser.add_argument("-d","--disc", help="Consume all discspace by creating a file 'eater' in current directory. \nIt will be deleted automatically after the test.", action="store_true")
 args = parser.parse_args()
