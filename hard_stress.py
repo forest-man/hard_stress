@@ -7,7 +7,7 @@ import argparse
 import subprocess
 from multiprocessing import Pool
 from multiprocessing import cpu_count
-
+from argparse import RawTextHelpFormatter
 
 def f(x):
     while True:
@@ -54,19 +54,23 @@ def dame():
                 else:
                     raise
 
+parser = argparse.ArgumentParser(
+        description="Universal script for testing CPU, RAM and disc space consumption. \nPlease choose required optional argument.",
+        epilog="",formatter_class=argparse.RawTextHelpFormatter)
 
-parser = argparse.ArgumentParser()
-subparsers = parser.add_subparsers()
+parser.add_argument("-c","--cpu", help="Consume all CPU", action="store_true")
+parser.add_argument("-m","--memory", help="Consume all memory", action="store_true")
+parser.add_argument("-d","--disc", help="Consume all discspace", action="store_true")
+args = parser.parse_args()
 
-
-parser_dame = subparsers.add_parser('d', help='Consume Disc space')
-parser_dame.set_defaults(func=dame)
+if args.cpu:
+    cpu_eat()
+elif args.memory:
+    mem_eat()
+elif args.disc:
+    dame()
 
 if len(sys.argv) <= 1:
     sys.argv.append('--help')
 
-options = parser.parse_args()
-
-# Run the appropriate function (in this case dame)
-options.func()
 
