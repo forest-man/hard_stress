@@ -48,7 +48,7 @@ def mem_eat():
             time.sleep(0.01)
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
-def dame():
+def disc_eat():
     write_str = "Full_space"*2048*2048*50  # Consume amount
 
     try:
@@ -89,7 +89,7 @@ elif args.cpu == 'o':
 elif args.memory:
     mem_eat()
 elif args.disc:
-    dame()
+    disc_eat()
 
 
 
