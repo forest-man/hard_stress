@@ -14,29 +14,32 @@ from multiprocessing import cpu_count
 from argparse import RawTextHelpFormatter
 
 def f(x):
-    while True:
-        x * x
+    try:
+        while True:
+            x ** x
+            x = x + 99999
+    except KeyboardInterrupt:
+        print("")
+
+
 
 # CPU consumption tool doesn't work properly yet (need to make multi/one CPU core consumption thingy with nice proc stop mechanism)
-def cpu_eat_all():
-    if __name__ == '__main__':
-        processes = cpu_count()
-        print('-' * 20)
-        print('Running load on CPU')
-        print('Utilizing %d cores' % processes)
-        print('-' * 20)
-        pool = Pool(processes)
-        pool.map(f, range(processes))
 
-def cpu_eat_one():
-    if __name__ == '__main__':
-        processes = cpu_count()
-        print('-' * 20)
+def cpu_eat(x):
+    try:
+        if x == 1:
+            processes = 1
+        elif x == 3:
+            processes = cpu_count()
+
         print('Running load on CPU')
-        print('Utilizing 1 core')
-        print('-' * 20)
-        pool = mp.Pool(processes=1)
-        pool.map(f, range(processes))
+        print('Utilizing %d core out of %d' % (processes, cpu_count()))
+        map_parameters = range(processes)
+        pool = Pool(processes)
+        pool.map(f, map_parameters)
+
+    except KeyboardInterrupt:
+        print("Programm has been stoped")
 
 
 def mem_eat():
@@ -80,13 +83,13 @@ parser.add_argument("-m","--memory", help="Consume all memory.", action="store_t
 parser.add_argument("-d","--disc", help="Consume all discspace by creating a file 'eater' in current directory. \nIt will be deleted automatically after the test.", action="store_true")
 args = parser.parse_args()
 
-if len(sys.argv) <= 1:
+if len(sys.argv) < 1:
     sys.argv.append('--help')
 
 if args.cpu == 'a':
-    cpu_eat_all()
+    cpu_eat(3)
 elif args.cpu == 'o':
-    cpu_eat_one()
+    cpu_eat(1)
 elif args.memory:
     mem_eat()
 elif args.disc:
