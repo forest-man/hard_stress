@@ -13,6 +13,9 @@ from multiprocessing import Pool
 from multiprocessing import cpu_count
 from argparse import RawTextHelpFormatter
 
+MEGA = 10 ** 6
+MEGA_STR = ' ' * MEGA
+
 def f(x):
     try:
         while True:
@@ -47,9 +50,9 @@ def mem_eat():
     a = []
     while True:
         try:
-            a.append(' ' * 100)
+            a.append(MEGA_STR)
         except MemoryError:
-            time.sleep(30) # Adjust the time during which memory consumption will be at 100% constantly
+            time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
             break
 #            time.sleep(0.01)
 
