@@ -49,7 +49,9 @@ def mem_eat():
         try:
             a.append(' ' * 100)
         except MemoryError:
-            time.sleep(0.01)
+            time.sleep(30) # Adjust the time during which memory consumption will be at 100% constantly
+            break
+#            time.sleep(0.01)
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
 def disc_eat():
@@ -79,7 +81,7 @@ parser = argparse.ArgumentParser(
         epilog="",formatter_class=argparse.RawTextHelpFormatter)
 
 parser.add_argument("-c","--cpu", help="Consume all CPU. \nChoises are: \n    'a' - for all CPU cores consumption \n    'o' - for one CPU core consumption", choices=['a','o'])
-parser.add_argument("-m","--memory", help="Consume all memory.", action="store_true")
+parser.add_argument("-m","--memory", help="Consume all memory. \nMemory consumption will be at max level during 60s by default. It will cause freezes.", action="store_true")
 parser.add_argument("-d","--disc", help="Consume all discspace by creating a file 'eater' in current directory. \nIt will be deleted automatically after the test.", action="store_true")
 args = parser.parse_args()
 
