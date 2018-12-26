@@ -8,7 +8,7 @@ SH:
 PY:
 
 6. Main - Merge into one script - Implement mode selection via cli keys(-m memory, -c cpu) (done)
-7. Implement pseudo dame file as a function in main py script (make live stats and deleting mechanism of spaceeating file after sigkill) (done without stats)
-8. System live monitoring (applied for disc eat, and for mem eat, for cpu eat)
+7. Implement pseudo dame file as a function in main py script (add deleting mechanism of spaceeating file after sigkill) (done without stats)
+8. System live monitoring 
 9. Add timestamps
 10. Add writing output to log
