@@ -22,7 +22,7 @@ def f(x):
             x ** x
             x = x + 99999
     except KeyboardInterrupt:
-        print("")
+        a = 1
 
 
 
@@ -36,6 +36,7 @@ def cpu_eat(processes):
         pool.map(f, map_parameters)
 
     except KeyboardInterrupt:
+        print("")
         print("Programm has been stoped")
 
 

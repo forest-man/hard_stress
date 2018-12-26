@@ -12,3 +12,4 @@ WARN: when CPU consumption is 99.9% and higher, the machine is down!!!!!
 6. Main - Merge into one script - Implement mode selection via cli keys(-m memory, -c cpu) (done)
 7. Implement pseudo dame file as a function in main py script (add deleting mechanism of spaceeating file after sigkill) (done)
 9. Add timestamps
+10. Make script stopping mechanism while CPU and mem_eat is on it's way to prevent whole machine freeze
