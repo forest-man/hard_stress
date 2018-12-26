@@ -22,7 +22,7 @@ def f(x):
             x ** x
             x = x + 99999
     except KeyboardInterrupt:
-        a = 1
+        a = 1 # Just a stub for nicer output of KeyboardInterrupt exception
 
 
 
@@ -37,19 +37,27 @@ def cpu_eat(processes):
 
     except KeyboardInterrupt:
         print("")
-        print("Programm has been stoped")
+        print("Programm has been stopped")
 
 
 def mem_eat():
     print("Memory consumption is started...\nPlease use \'ctrl+c\' command to exit.")
     a = []
-    while True:
-        try:
-            a.append(MEGA_STR)
-        except MemoryError:
-            time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
-            break
-#            time.sleep(0.01)
+    try:
+        while True:
+            try:
+                a.append(MEGA_STR)
+            
+            except MemoryError:
+                time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
+                print("Programm has been stopped due to reaching memory limit")
+                break
+    except KeyboardInterrupt:
+        print("")
+        print("Programm has been stopped")
+
+
+
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
 def disc_eat():
@@ -71,12 +79,16 @@ def disc_eat():
                             break
                         time.sleep(60)
                         os.remove('eater')
+                        print("Discspace consumption has been stopped due to reaching disc space limit.\nRemoving 'eater' file...")
+
                     else:
                         raise
     except KeyboardInterrupt:
         os.remove('eater')
+        print("")
         print("The script has been stopped")
     except OSError:
+        print("")
         print("The script has been stopped")
 
 parser = argparse.ArgumentParser(
