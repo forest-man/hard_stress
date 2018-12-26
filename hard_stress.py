@@ -74,10 +74,15 @@ def disc_eat():
                             write_str = write_str[:write_str_len/2]
                         else:
                             break
+                        time.sleep(60)
+                        os.remove('eater')
                     else:
                         raise
     except KeyboardInterrupt:
         os.remove('eater')
+        print("The script has been stopped")
+    except OSError:
+        print("The script has been stopped")
 
 parser = argparse.ArgumentParser(
         description="Universal script for testing CPU, RAM and discspace consumption. \nPlease choose required optional argument.",
