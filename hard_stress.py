@@ -27,12 +27,12 @@ def f(x):
 
 
 # CPU consumption tool doesn't work properly yet (need to make multi/one CPU core consumption thingy with nice proc stop mechanism)
-
+# make this simplier, delete one of conditions
 def cpu_eat(x):
     try:
         if x == 1:
             processes = 1
-        elif x == 3:
+        elif x == 3: # x == cpu_count()
             processes = cpu_count()
 
         print('Running load on CPU')
@@ -97,7 +97,7 @@ if len(sys.argv) < 1:
     sys.argv.append('--help')
 
 if args.cpu == 'a':
-    cpu_eat(3)
+    cpu_eat(3) # just all cpu
 elif args.cpu == 'o':
     cpu_eat(1)
 elif args.memory:
