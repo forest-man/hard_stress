@@ -26,8 +26,7 @@ def f(x):
 
 
 
-# CPU consumption tool doesn't work properly yet (need to make multi CPU core consumption thingy)
-# make this simplier, delete one of conditions
+# CPU consumption tool doesn't work properly yet (need to make multicore CPU consumption stopping handle)
 def cpu_eat(processes):
     try:
         print('Running load on CPU')
@@ -92,7 +91,7 @@ if len(sys.argv) < 1:
     sys.argv.append('--help')
 
 if args.cpu == 'a':
-    cpu_eat(cpu_count()) # just all cpu
+    cpu_eat(cpu_count()) 
 elif args.cpu == 'o':
     cpu_eat(1)
 elif args.memory:
