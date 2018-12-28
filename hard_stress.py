@@ -10,6 +10,7 @@ import argparse
 import subprocess
 import multiprocessing as mp
 from multiprocessing import Pool
+from multiprocessing import Process
 from multiprocessing import cpu_count
 from argparse import RawTextHelpFormatter
 
@@ -29,12 +30,10 @@ def f(x):
 # CPU consumption tool doesn't work properly yet (need to make multicore CPU consumption stopping handle)
 def cpu_eat(processes):
     try:
-        print('Running load on CPU')
-        print('Utilizing %d core out of %d' % (processes, cpu_count()))
-        map_parameters = range(processes)
-        pool = Pool(processes)
-        pool.map(f, map_parameters)
-
+        for i in range(processes):
+            pi = Process(target=f, args=(processes,))
+            pi.start()
+        pi.join()
     except KeyboardInterrupt:
         print("")
         print("Programm has been stopped")
