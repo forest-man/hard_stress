@@ -28,10 +28,9 @@ def cpu_eat(processes):
         print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
         processes_pool = []
         for i in range(processes):
-            pi = Process(target=f, args=(processes,))
-            processes_pool.append(pi)
-            pi.start()
-        pi.join()
+            processes_pool.append(Process(target=f, args=(processes,)))
+            processes_pool[i].start()
+        processes_pool[i].join()
     except KeyboardInterrupt:
         print(" \nProgramm has been stopped")
 
