@@ -35,7 +35,6 @@ def cpu_eat(processes):
         for i in range(processes):
             pi = Process(target=f, args=(processes,))
             pi.start()
-        
         pi.join()
     except KeyboardInterrupt:
         print("")
@@ -49,7 +48,6 @@ def mem_eat():
         while True:
             try:
                 a.append(MEGA_STR)
-            
             except MemoryError:
                 time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
                 print("Programm has been stopped due to reaching memory limit")
@@ -64,7 +62,6 @@ def mem_eat():
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
 def disc_eat():
     write_str = "Full_space"*2048*2048*50  # Consume amount
-
     try:
         print("Discspace consumption is started...\nPlease use \'ctrl+c\' command to exit.")
         with open('eater', "w") as f:
@@ -82,7 +79,6 @@ def disc_eat():
                         time.sleep(60)
                         os.remove('eater')
                         print("Discspace consumption has been stopped due to reaching disc space limit.\nRemoving 'eater' file...")
-
                     else:
                         raise
     except KeyboardInterrupt:
@@ -102,18 +98,20 @@ parser.add_argument("-m","--memory", help="Consume all memory. \nMemory consumpt
 parser.add_argument("-d","--disc", help="Consume all discspace by creating a file 'eater' in current directory. \nIt will be deleted automatically after the test.", action="store_true")
 args = parser.parse_args()
 
+
+def main():
+    if args.cpu == 'a':
+        cpu_eat(cpu_count()) 
+    elif args.cpu == 'o':
+        cpu_eat(1)
+    elif args.memory:
+        mem_eat()
+    elif args.disc:
+        disc_eat()
+
 if len(sys.argv) < 1:
     sys.argv.append('--help')
-
-if args.cpu == 'a':
-    cpu_eat(cpu_count()) 
-elif args.cpu == 'o':
-    cpu_eat(1)
-elif args.memory:
-    mem_eat()
-elif args.disc:
-    disc_eat()
-
-
+else:
+    main()
 
 
