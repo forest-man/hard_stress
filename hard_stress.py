@@ -14,8 +14,6 @@ from multiprocessing import Process
 from multiprocessing import cpu_count
 from argparse import RawTextHelpFormatter
 
-MEGA = 10 ** 6
-MEGA_STR = ' ' * MEGA
 
 def f(x):
     try:
@@ -44,6 +42,8 @@ def cpu_eat(processes):
 def mem_eat():
     print("Memory consumption is started...\nPlease use \'ctrl+c\' command to exit.")
     a = []
+    MEGA = 10 ** 6
+    MEGA_STR = ' ' * MEGA
     try:
         while True:
             try:
