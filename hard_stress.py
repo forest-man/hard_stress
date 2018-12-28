@@ -9,11 +9,8 @@ import errno
 import argparse
 import subprocess
 import multiprocessing as mp
-from multiprocessing import Pool
-from multiprocessing import Process
-from multiprocessing import cpu_count
 from argparse import RawTextHelpFormatter
-
+from multiprocessing import Pool, Process, cpu_count
 
 def f(x):
     try:
@@ -21,22 +18,22 @@ def f(x):
             x ** x
             x = x + 99999
     except KeyboardInterrupt:
-        a = 1 # Just a stub for nicer output of KeyboardInterrupt exception
+        pass # Just a stub for nicer output of KeyboardInterrupt exception
 
 
 
 # CPU consumption tool doesn't work properly yet (need to make multicore CPU consumption stopping handle)
 def cpu_eat(processes):
     try:
-        print('Running load on CPU')
-        print('Utilizing %d core out of %d' % (processes, cpu_count()))
+        print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
+        processes_pool = []
         for i in range(processes):
             pi = Process(target=f, args=(processes,))
+            processes_pool.append(pi)
             pi.start()
         pi.join()
     except KeyboardInterrupt:
-        print("")
-        print("Programm has been stopped")
+        print(" \nProgramm has been stopped")
 
 
 def mem_eat():
@@ -53,9 +50,7 @@ def mem_eat():
                 print("Programm has been stopped due to reaching memory limit")
                 break
     except KeyboardInterrupt:
-        print("")
-        print("Programm has been stopped")
-
+        print(" \nProgramm has been stopped")
 
 
 
@@ -83,11 +78,9 @@ def disc_eat():
                         raise
     except KeyboardInterrupt:
         os.remove('eater')
-        print("")
-        print("The script has been stopped")
+        print(" \nThe script has been stopped")
     except OSError:
-        print("")
-        print("The script has been stopped")
+        print(" \nThe script has been stopped")
 
 parser = argparse.ArgumentParser(
         description="Universal script for testing CPU, RAM and discspace consumption. \nPlease choose required optional argument.",
