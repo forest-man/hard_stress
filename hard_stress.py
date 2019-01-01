@@ -30,7 +30,9 @@ def cpu_eat(processes):
         for i in range(processes):
             processes_pool.append(Process(target=f, args=(processes,)))
             processes_pool[i].start()
+        print(processes_pool)
         processes_pool[i].join()
+        #print(processes_pool)
     except KeyboardInterrupt:
         print(" \nProgramm has been stopped")
 
@@ -91,19 +93,15 @@ parser.add_argument("-d","--disc", help="Consume all discspace by creating a fil
 args = parser.parse_args()
 
 
-def main():
-    if args.cpu == 'a':
-        cpu_eat(cpu_count()) 
-    elif args.cpu == 'o':
-        cpu_eat(1)
-    elif args.memory:
-        mem_eat()
-    elif args.disc:
-        disc_eat()
+if args.cpu == 'a':
+    cpu_eat(cpu_count()) 
+elif args.cpu == 'o':
+    cpu_eat(1)
+elif args.memory:
+    mem_eat()
+elif args.disc:
+    disc_eat()
 
-if len(sys.argv) < 1:
-    sys.argv.append('--help')
-else:
-    main()
-
+if len(sys.argv) == 1:
+    parser.print_help()
 
