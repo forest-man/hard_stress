@@ -8,7 +8,6 @@ import time
 import errno
 import argparse
 import subprocess
-import multiprocessing as mp
 from argparse import RawTextHelpFormatter
 from multiprocessing import Pool, Process, cpu_count
 
