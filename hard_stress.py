@@ -40,15 +40,17 @@ def echo_server():
         pass # Just a stub for nicer output of KeyboardInterrupt exception
 
 
-def f(x):
+def cpu_cons(x):
     try:
         while True:
             if 'kill' in flag:
-                print(" \nCpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
+                #print(" \nCpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
                 break
             else:
                 x ** x
                 x = x + 99999
+
+        print(" \nCpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
     except KeyboardInterrupt:
         pass # Just a stub for nicer output of KeyboardInterrupt exception
 
@@ -59,17 +61,18 @@ def cpu_eat(processes):
         print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
         processes_pool = []
         for i in range(processes):
-            processes_pool.append(Process(target=f, args=(processes,)))
+            processes_pool.append(Process(target=cpu_cons, args=(processes,)))
             processes_pool[i].start()
         p = Process(target=echo_server)
         p.start()
         p.join()
         processes_pool[i].join()
+
     except KeyboardInterrupt:
         print(" \nProgramm has been stopped")
 
 
-def mem_eat():
+def mem_cons():
     print("Memory consumption is started...\nPlease use \'ctrl+c\' command to exit.")
     a = []
     MEGA = 10 ** 6
@@ -77,6 +80,9 @@ def mem_eat():
     try:
         while True:
             try:
+                #if 'kill' in flag:
+                #    break
+                #else:
                 a.append(MEGA_STR)
             except MemoryError:
                 time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
@@ -85,6 +91,16 @@ def mem_eat():
     except KeyboardInterrupt:
         print(" \nProgramm has been stopped")
 
+def mem_eat():
+    try:
+        p = Process(target=echo_server)
+        m = Process(target=mem_cons)
+        p.start()
+        m.start()
+        p.join()
+        m.join()
+    except KeyboardInterrupt:
+        pass
 
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
