@@ -8,17 +8,47 @@ import time
 import errno
 import argparse
 import subprocess
+import SocketServer
 from argparse import RawTextHelpFormatter
-from multiprocessing import Pool, Process, cpu_count
+from multiprocessing import Manager, Pool, Process, cpu_count
+
+manager = Manager()
+
+flag = manager.dict()
+
+def echo_server():
+    HOST = "0.0.0.0"
+    PORT = 12321
+
+    class EchoServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+        pass
+
+    class EchoRequestHandler(SocketServer.StreamRequestHandler):
+        def handle(self):
+            print "connection from %s" % self.client_address[0]
+            while True:
+                line = self.rfile.readline()
+                if not line:
+                 break
+                flag[line.rstrip()] = 0
+
+            print "%s disconnected" % self.client_address[0]
+    
+    server = EchoServer((HOST, PORT), EchoRequestHandler)
+    server.serve_forever()
+
 
 def f(x):
     try:
         while True:
-            x ** x
-            x = x + 99999
+            if 'kill' in flag:
+                print(" \nCpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
+                break
+            else:
+                x ** x
+                x = x + 99999
     except KeyboardInterrupt:
         pass # Just a stub for nicer output of KeyboardInterrupt exception
-
 
 
 # CPU consumption tool doesn't work properly yet (need to make multicore CPU consumption stopping handle)
@@ -29,9 +59,10 @@ def cpu_eat(processes):
         for i in range(processes):
             processes_pool.append(Process(target=f, args=(processes,)))
             processes_pool[i].start()
-        print(processes_pool)
+        p = Process(target=echo_server)
+        p.start()
+        p.join()
         processes_pool[i].join()
-        #print(processes_pool)
     except KeyboardInterrupt:
         print(" \nProgramm has been stopped")
 
