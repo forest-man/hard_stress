@@ -20,22 +20,24 @@ def echo_server():
     HOST = "0.0.0.0"
     PORT = 12321
 
-    class EchoServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
-        pass
+    try:
+        class EchoServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+            pass
 
-    class EchoRequestHandler(SocketServer.StreamRequestHandler):
-        def handle(self):
-            print "connection from %s" % self.client_address[0]
-            while True:
-                line = self.rfile.readline()
-                if not line:
-                 break
-                flag[line.rstrip()] = 0
-
-            print "%s disconnected" % self.client_address[0]
+        class EchoRequestHandler(SocketServer.StreamRequestHandler):
+            def handle(self):
+                print "%s was remotely connected" % self.client_address[0]
+                while True:
+                    line = self.rfile.readline()
+                    if not line:
+                        break
+                    flag[line.rstrip()] = 0
+                print "Remote client %s was disconnected" % self.client_address[0]
     
-    server = EchoServer((HOST, PORT), EchoRequestHandler)
-    server.serve_forever()
+        server = EchoServer((HOST, PORT), EchoRequestHandler)
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass # Just a stub for nicer output of KeyboardInterrupt exception
 
 
 def f(x):
