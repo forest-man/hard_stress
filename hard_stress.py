@@ -44,7 +44,6 @@ def cpu_cons(x):
     try:
         while True:
             if 'kill' in flag:
-                #print(" \nCpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
                 break
             else:
                 x ** x
@@ -52,7 +51,7 @@ def cpu_cons(x):
 
         print(" \nCpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
     except KeyboardInterrupt:
-        pass # Just a stub for nicer output of KeyboardInterrupt exception
+        pass
 
 
 # CPU consumption tool doesn't work properly yet (need to make multicore CPU consumption stopping handle)
@@ -75,8 +74,7 @@ def cpu_eat(processes):
 def mem_cons():
     print("Memory consumption is started...\nPlease use \'ctrl+c\' command to exit.")
     a = []
-    MEGA = 10 ** 6
-    MEGA_STR = ' ' * MEGA
+    MEGA_STR = ' ' * (10 ** 6)
     try:
         while True:
             try:
