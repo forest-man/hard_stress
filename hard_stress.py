@@ -83,14 +83,15 @@ def mem_cons():
             try:
                 idx += 1
                 if idx > 10000:
-                    if 'kill' in flag: break
+                    if 'kill' in flag: 
+                        print(" \nMemory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
+                        break
                     idx = 0
                 appender(MEGA_STR)
             except MemoryError:
                 print("Program has been stopped due to reaching memory limit")
                 time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
                 break
-        print(" \nMemory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
     except KeyboardInterrupt:
         print(" \nProgram has been stopped")
 

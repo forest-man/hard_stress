@@ -14,4 +14,5 @@ WARN: when CPU consumption is 99.9% and higher, the machine is down!!!!!
 9. Change multiprocessing by shared libraries https://stackoverflow.com/questions/6832554/multiprocessing-how-do-i-share-a-dict-among-multiple-processes (done)
 10. Make script stopping mechanism while CPU and mem_eat is on it's way to prevent whole machine freeze - via echo server using telnet (done)
 11. Make nice message after remote CPU cons (4 threads) and memory cons stopping
+12. Remotely stop mem cons after MemoryError exception was caught
  
