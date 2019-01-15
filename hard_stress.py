@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+
 # Developed by MVelichko
 
 import os
@@ -68,26 +69,29 @@ def cpu_eat(processes):
         processes_pool[i].join()
 
     except KeyboardInterrupt:
-        print(" \nProgramm has been stopped")
+        print(" \nProgram has been stopped")
 
 
 def mem_cons():
     print("Memory consumption is started...\nPlease use \'ctrl+c\' command to exit.")
     a = []
-    MEGA_STR = ' ' * (10 ** 6)
+    idx = 0
+    appender = a.append
+    MEGA_STR = 'F' * (10 ** 4)
     try:
         while True:
             try:
-                #if 'kill' in flag:
-                #    break
-                #else:
-                a.append(MEGA_STR)
+                idx += 1
+                if idx > 10000:
+                    if 'kill' in flag: break
+                    idx = 0
+                appender(MEGA_STR)
             except MemoryError:
+                print("Program has been stopped due to reaching memory limit")
                 time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
-                print("Programm has been stopped due to reaching memory limit")
                 break
     except KeyboardInterrupt:
-        print(" \nProgramm has been stopped")
+        print(" \nProgram has been stopped")
 
 def mem_eat():
     try:
