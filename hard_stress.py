@@ -27,13 +27,13 @@ def echo_server():
 
         class EchoRequestHandler(SocketServer.StreamRequestHandler):
             def handle(self):
-                print "%s was remotely connected" % self.client_address[0]
+                print "\n%s was remotely connected" % self.client_address[0]
                 while True:
                     line = self.rfile.readline()
                     if not line:
                         break
                     flag[line.rstrip()] = 0
-                print "Remote client %s was disconnected" % self.client_address[0]
+                print "\nRemote client %s was disconnected" % self.client_address[0]
     
         server = EchoServer((HOST, PORT), EchoRequestHandler)
         server.serve_forever()
@@ -90,6 +90,7 @@ def mem_cons():
                 print("Program has been stopped due to reaching memory limit")
                 time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
                 break
+        print(" \nMemory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
     except KeyboardInterrupt:
         print(" \nProgram has been stopped")
 
