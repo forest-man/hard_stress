@@ -85,6 +85,7 @@ def mem_cons():
                 if idx > 10000:
                     if 'kill' in flag: 
                         print(" \nMemory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
+                        a = []
                         break
                     idx = 0
                 appender(MEGA_STR)
