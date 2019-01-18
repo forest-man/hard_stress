@@ -7,6 +7,7 @@ import os
 import sys
 import time
 import errno
+import datetime
 import argparse
 import subprocess
 import SocketServer
@@ -14,8 +15,12 @@ from argparse import RawTextHelpFormatter
 from multiprocessing import Manager, Pool, Process, cpu_count
 
 manager = Manager()
-
 flag = manager.dict()
+
+def timestamp():
+    print("["+datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'+"]"))
+
+
 
 def echo_server():
     HOST = "0.0.0.0"
@@ -27,12 +32,14 @@ def echo_server():
 
         class EchoRequestHandler(SocketServer.StreamRequestHandler):
             def handle(self):
+                timestamp()
                 print "\n%s was remotely connected" % self.client_address[0]
                 while True:
                     line = self.rfile.readline()
                     if not line:
                         break
                     flag[line.rstrip()] = 0
+                timestamp()    
                 print "\nRemote client %s was disconnected" % self.client_address[0]
     
         server = EchoServer((HOST, PORT), EchoRequestHandler)
@@ -49,7 +56,7 @@ def cpu_cons(x):
             else:
                 x ** x
                 x = x + 99999
-
+        timestamp()
         print(" \nCpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
     except KeyboardInterrupt:
         pass
@@ -58,6 +65,7 @@ def cpu_cons(x):
 # CPU consumption tool doesn't work properly yet (need to make multicore CPU consumption stopping handle)
 def cpu_eat(processes):
     try:
+        timestamp()
         print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
         processes_pool = []
         for i in range(processes):
@@ -69,10 +77,12 @@ def cpu_eat(processes):
         processes_pool[i].join()
 
     except KeyboardInterrupt:
+        timestamp()
         print(" \nProgram has been stopped")
 
 
 def mem_cons():
+    timestamp()
     print("Memory consumption is started...\nPlease use \'ctrl+c\' command to exit.")
     a = []
     idx = 0
@@ -83,17 +93,20 @@ def mem_cons():
             try:
                 idx += 1
                 if idx > 10000:
-                    if 'kill' in flag: 
+                    if 'kill' in flag:
+                        timestamp()
                         print(" \nMemory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
                         a = []
                         break
                     idx = 0
                 appender(MEGA_STR)
             except MemoryError:
+                timestamp()
                 print("Program has been stopped due to reaching memory limit")
                 time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
                 break
     except KeyboardInterrupt:
+        timestamp()
         print(" \nProgram has been stopped")
 
 def mem_eat():
@@ -112,6 +125,7 @@ def mem_eat():
 def disc_eat():
     write_str = "Full_space"*2048*2048*50  # Consume amount
     try:
+        timestamp()
         print("Discspace consumption is started...\nPlease use \'ctrl+c\' command to exit.")
         with open('eater', "w") as f:
             while True:
@@ -127,13 +141,16 @@ def disc_eat():
                             break
                         time.sleep(60)
                         os.remove('eater')
+                        timestamp()
                         print("Discspace consumption has been stopped due to reaching disc space limit.\nRemoving 'eater' file...")
                     else:
                         raise
     except KeyboardInterrupt:
         os.remove('eater')
+        timestamp()
         print(" \nThe script has been stopped")
     except OSError:
+        timestamp()
         print(" \nThe script has been stopped")
 
 parser = argparse.ArgumentParser(
