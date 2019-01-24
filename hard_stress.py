@@ -18,7 +18,7 @@ manager = Manager()
 flag = manager.dict()
 
 def timestamp():
-    print("["+datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'+"]"))
+    print("["+datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'+"]")),
 
 
 
@@ -32,15 +32,17 @@ def echo_server():
 
         class EchoRequestHandler(SocketServer.StreamRequestHandler):
             def handle(self):
+                print("")
                 timestamp()
-                print "\n%s was remotely connected" % self.client_address[0]
+                print "%s was remotely connected" % self.client_address[0]
                 while True:
                     line = self.rfile.readline()
                     if not line:
                         break
                     flag[line.rstrip()] = 0
+                print("")
                 timestamp()    
-                print "\nRemote client %s was disconnected" % self.client_address[0]
+                print "Remote client %s was disconnected" % self.client_address[0]
     
         server = EchoServer((HOST, PORT), EchoRequestHandler)
         server.serve_forever()
@@ -56,8 +58,9 @@ def cpu_cons(x):
             else:
                 x ** x
                 x = x + 99999
+        print("")
         timestamp()
-        print(" \nCpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
+        print("Cpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
     except KeyboardInterrupt:
         pass
 
@@ -77,8 +80,9 @@ def cpu_eat(processes):
         processes_pool[i].join()
 
     except KeyboardInterrupt:
+        print("")
         timestamp()
-        print(" \nProgram has been stopped")
+        print("Program has been stopped")
 
 
 def mem_cons():
@@ -94,8 +98,9 @@ def mem_cons():
                 idx += 1
                 if idx > 10000:
                     if 'kill' in flag:
+                        print("")
                         timestamp()
-                        print(" \nMemory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
+                        print("Memory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
                         a = []
                         break
                     idx = 0
@@ -106,8 +111,10 @@ def mem_cons():
                 time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
                 break
     except KeyboardInterrupt:
+        print("")
         timestamp()
-        print(" \nProgram has been stopped")
+        print("Program has been stopped")
+        #print(" \nProgram has been stopped")
 
 def mem_eat():
     try:
@@ -147,11 +154,13 @@ def disc_eat():
                         raise
     except KeyboardInterrupt:
         os.remove('eater')
+        print("")
         timestamp()
-        print(" \nThe script has been stopped")
+        print("The script has been stopped")
     except OSError:
+        print("")
         timestamp()
-        print(" \nThe script has been stopped")
+        print("The script has been stopped")
 
 parser = argparse.ArgumentParser(
         description="Universal script for testing CPU, RAM and discspace consumption. \nPlease choose required optional argument.",
