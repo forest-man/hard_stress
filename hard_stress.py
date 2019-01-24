@@ -17,8 +17,13 @@ from multiprocessing import Manager, Pool, Process, cpu_count
 manager = Manager()
 flag = manager.dict()
 
+
+class bcolors:
+    OKGREEN = '\033[92m'
+    ENDC = '\033[0m'
+
 def timestamp():
-    print("["+datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'+"]")),
+    print(bcolors.OKGREEN+"["+datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'+"]")+bcolors.ENDC),
 
 
 
