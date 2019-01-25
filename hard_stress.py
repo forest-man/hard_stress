@@ -112,19 +112,22 @@ def mem_cons():
                 appender(MEGA_STR)
             except MemoryError:
                 timestamp()
+                print("Program is sleeping due to reaching memory limit")
+                time.sleep(30) # Adjust the time during which memory consumption will be at 100% constantly
+                timestamp()
                 print("Program has been stopped due to reaching memory limit")
-                time.sleep(60) # Adjust the time during which memory consumption will be at 100% constantly
+                a = []
                 break
     except KeyboardInterrupt:
         print("")
         timestamp()
         print("Program has been stopped")
-        #print(" \nProgram has been stopped")
 
 def mem_eat():
     try:
         p = Process(target=echo_server)
         m = Process(target=mem_cons)
+        m.daemon = True
         p.start()
         m.start()
         p.join()
