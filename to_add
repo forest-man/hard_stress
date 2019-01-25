@@ -15,6 +15,7 @@ WARN: when CPU consumption is 99.9% and higher, the machine is down!!!!!
 10. Make script stopping mechanism while CPU and mem_eat is on it's way to prevent whole machine freeze - via echo server using telnet (done)
 11. Make nice message after remote CPU cons (4 threads) and memory cons stopping
 12. Remotely stop mem cons after MemoryError exception was caught (done)
-13. Make mem cons to run unlimited time, up to remote kill
+13. Make mem cons to run unlimited time, up to remote kill - maybe daemons will be help
 14. Output to user ip address of echo server
 15. Make the timestamps (done)
+16. Make disc cinsumption via trhreads
