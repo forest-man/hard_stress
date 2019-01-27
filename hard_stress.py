@@ -107,17 +107,29 @@ def mem_cons():
                         timestamp()
                         print("Memory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
                         a = []
+                        timestamp()
+                        print("Memory was cleared")
                         break
+
                     idx = 0
                 appender(MEGA_STR)
             except MemoryError:
                 timestamp()
                 print("Program is sleeping due to reaching memory limit")
-                time.sleep(30) # Adjust the time during which memory consumption will be at 100% constantly
-                timestamp()
-                print("Program has been stopped due to reaching memory limit")
-                a = []
-                break
+                time.sleep(0.5)
+                if 'kill' in flag:
+                    print("")
+                    timestamp()
+                    print("Memory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
+                    a = []
+                    timestamp()
+                    print("Memory was cleared")
+                    break
+
+                #timestamp()
+                #print("Program has been stopped due to reaching memory limit")
+                #a = []
+                #break
     except KeyboardInterrupt:
         print("")
         timestamp()
