@@ -19,3 +19,5 @@ WARN: when CPU consumption is 99.9% and higher, the machine is down!!!!!
 14. Output to user ip address of echo server
 15. Make the timestamps (done)
 16. Make disc cinsumption via trhreads
+####################################
+17. Kill main script after mem_cons was remotely killed - to speed up memory cleaning
