@@ -4,7 +4,7 @@ SH:
 3. Add easy way to exit cpu consumption script and main hard_stress script (done)
 4. Add comments in every script (done)
 5. Add Multitreading CPU consumption test (done, but make a live stats)
-
+---just test---
 PY:
 
 
