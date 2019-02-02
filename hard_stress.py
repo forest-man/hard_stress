@@ -187,7 +187,7 @@ parser = argparse.ArgumentParser(
         epilog="",formatter_class=argparse.RawTextHelpFormatter)
 
 parser.add_argument("-c","--cpu", help="Consume all CPU. \nChoises are: \n    'a' - for all CPU cores consumption \n    'o' - for one CPU core consumption", choices=['a','o'])
-parser.add_argument("-m","--memory", help="Consume all memory. \nMemory consumption will be at max level during 60s by default. It will cause freezes.", action="store_true")
+parser.add_argument("-m","--memory", help="Consume all memory. \nMemory consumption will be at max level until you stop it remotely. It will cause freezes.", action="store_true")
 parser.add_argument("-d","--disc", help="Consume all discspace by creating a file 'eater' in current directory. \nIt will be deleted automatically after the test.", action="store_true")
 args = parser.parse_args()
 
