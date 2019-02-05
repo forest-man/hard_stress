@@ -111,6 +111,7 @@ def mem_cons():
                         timestamp()
                         print("Memory was cleared")
                         break
+                        #subprocess.call(["pkill", "-f", str(name)]) to use termination coment break
 
                     idx = 0
                 appender(MEGA_STR)
@@ -126,6 +127,9 @@ def mem_cons():
                     timestamp()
                     print("Memory was cleared")
                     break
+                    #subprocess.call(["pkill", "-f", str(name)]) to use termination com
+ent break
+
 
                 #timestamp()
                 #print("Program has been stopped due to reaching memory limit")
