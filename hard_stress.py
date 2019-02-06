@@ -158,7 +158,8 @@ def multiproc(processes, key):
             p = Process(target=echo_server)
             p.start()
             p.join()
-            processes_pool[i].join()
+            for i in range(processes):
+                processes_pool[i].join()
         except KeyboardInterrupt:
             print("")
             timestamp()
@@ -169,21 +170,24 @@ parser = argparse.ArgumentParser(
         description="Universal script for testing CPU, RAM and discspace consumption. \nPlease choose required optional argument.",
         epilog="",formatter_class=argparse.RawTextHelpFormatter)
 
-parser.add_argument("-c","--cpu", help="Consume all CPU. \nChoises are: \n    'a' - for all CPU cores consumption \n    'o' - for one CPU core consumption", choices=['a','o'])
-parser.add_argument("-m","--memory", help="Consume all memory. \nMemory consumption will be at max level until you stop it remotely. It will cause freezes.", action="store_true")
-parser.add_argument("-d","--disc", help="Consume all discspace by creating a file 'eater' in current directory. \nIt will be deleted automatically after the test.", action="store_true")
+parser.add_argument("-m","--mode", help="Select mode (cpu/cpu1/mem/disc)", type=str, default=None)
 args = parser.parse_args()
 
+if args.mode not in ['cpu', 'cpu1', 'mem', 'disc']:
+    print "Unsupported mode:", args.mode
+    exit(1)
 
-if args.cpu == 'a':
-    multiproc(cpu_count(), cpu_cons) 
-elif args.cpu == 'o':
-    multiproc(1, cpu_cons)
-elif args.memory:
-    multiproc(1, mem_cons)
-elif args.disc:
-    multiproc(1, disc_eat)
-    #disc_eat()
+target_func = {
+    'mem': mem_cons,
+    'cpu': cpu_cons,
+    'cpu1': cpu_cons,
+    'disc': disc_eat
+    }[args.mode]
+proc_cnt = 1
+if args.mode == 'cpu':
+    proc_cnt = cpu_count()
+
+multiproc(proc_cnt, target_func)
 
 if len(sys.argv) == 1:
     parser.print_help()
