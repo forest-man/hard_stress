@@ -16,7 +16,7 @@ from multiprocessing import Manager, Pool, Process, cpu_count
 
 manager = Manager()
 flag = manager.dict()
-
+name = sys.argv[0]
 
 class bcolors:
     OKGREEN = '\033[92m'
