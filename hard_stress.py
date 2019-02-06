@@ -113,7 +113,7 @@ def mem_cons(x):
 
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
-def disc_eat():
+def disc_eat(x):
     write_str = "Full_space"*2048*2048*50  # Consume amount
     try:
         timestamp()
@@ -126,7 +126,7 @@ def disc_eat():
                 except IOError as err:
                     if err.errno == errno.ENOSPC:
                         write_str_len = len(write_str)
-                        if write_str_len > 1:
+                        if write_str_len > x:
                             write_str = write_str[:write_str_len/2]
                         else:
                             break
@@ -182,7 +182,8 @@ elif args.cpu == 'o':
 elif args.memory:
     multiproc(1, mem_cons)
 elif args.disc:
-    disc_eat()
+    multiproc(1, disc_eat)
+    #disc_eat()
 
 if len(sys.argv) == 1:
     parser.print_help()
