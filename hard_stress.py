@@ -6,6 +6,7 @@ import os
 import sys
 import time
 import errno
+import socket
 import datetime
 import argparse
 import subprocess
@@ -26,28 +27,33 @@ def timestamp():
 
 
 def echo_server():
-    HOST = "0.0.0.0"
-    PORT = 12321
     try:
-        class EchoServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
-            pass
-        class EchoRequestHandler(SocketServer.StreamRequestHandler):
-            def handle(self):
-                print("")
-                timestamp()
-                print "%s was remotely connected" % self.client_address[0]
-                while True:
-                    line = self.rfile.readline()
-                    if not line:
-                        break
-                    flag[line.rstrip()] = 0
-                print("")
-                timestamp()    
-                print "Remote client %s was disconnected" % self.client_address[0]
-        server = EchoServer((HOST, PORT), EchoRequestHandler)
-        server.serve_forever()
+        connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        connection.bind(('0.0.0.0', 12321))
+        connection.listen(10)
+        while True:
+            current_connection, address = connection.accept()
+            while True:
+                data = current_connection.recv(2048)
+
+                if data == 'quit\r\n':
+                    current_connection.shutdown(1)
+                    current_connection.close()
+                    break
+
+                elif data == 'kill\r\n':
+                    current_connection.shutdown(1)
+                    current_connection.close()
+                    flag[data] = 0
+                    exit()
+
+                elif data:
+                    current_connection.send(data)
+                    print data
+
     except KeyboardInterrupt:
-        pass # Just a stub for nicer output of KeyboardInterrupt exception
+        pass
 
 
 def cpu_cons(x):
@@ -60,7 +66,7 @@ def cpu_cons(x):
                 x = x + 99999
         print("")
         timestamp()
-        #subprocess.call(["pkill", "-f", str(name)])
+        subprocess.call(["pkill", "-f", str(name)])
         print("Cpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
     except KeyboardInterrupt:
         pass
@@ -155,9 +161,10 @@ def multiproc(processes, key):
             for i in range(processes):
                 processes_pool.append(Process(target=key, args=(processes,)))
                 processes_pool[i].start()
-            p = Process(target=echo_server)
-            p.start()
-            p.join()
+            #p = Process(target=echo_server)
+            #p.start()
+            echo_server()
+            #p.join()
             for i in range(processes):
                 processes_pool[i].join()
         except KeyboardInterrupt:
