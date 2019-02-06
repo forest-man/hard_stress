@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-
 # Developed by MVelichko
 
 import os
@@ -26,15 +25,12 @@ def timestamp():
     print(bcolors.OKGREEN+"["+datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'+"]")+bcolors.ENDC),
 
 
-
 def echo_server():
     HOST = "0.0.0.0"
     PORT = 12321
-
     try:
         class EchoServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
             pass
-
         class EchoRequestHandler(SocketServer.StreamRequestHandler):
             def handle(self):
                 print("")
@@ -48,7 +44,6 @@ def echo_server():
                 print("")
                 timestamp()    
                 print "Remote client %s was disconnected" % self.client_address[0]
-    
         server = EchoServer((HOST, PORT), EchoRequestHandler)
         server.serve_forever()
     except KeyboardInterrupt:
@@ -71,33 +66,13 @@ def cpu_cons(x):
         pass
 
 
-# CPU consumption tool doesn't work properly yet (need to make multicore CPU consumption stopping handle)
-def cpu_eat(processes):
-    try:
-        timestamp()
-        print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
-        processes_pool = []
-        for i in range(processes):
-            processes_pool.append(Process(target=cpu_cons, args=(processes,)))
-            processes_pool[i].start()
-        p = Process(target=echo_server)
-        p.start()
-        p.join()
-        processes_pool[i].join()
-
-    except KeyboardInterrupt:
-        print("")
-        timestamp()
-        print("Program has been stopped")
-
-
-def mem_cons():
+def mem_cons(x):
     timestamp()
     print("Memory consumption is started...\nPlease use \'ctrl+c\' command to exit.")
     a = []
     idx = 0
     appender = a.append
-    MEGA_STR = 'F' * (10 ** 4)
+    MEGA_STR = 'F' * (10 ** 4 * x)
     try:
         while True:
             try:
@@ -112,7 +87,6 @@ def mem_cons():
                         print("Memory was cleared")
                         break
                         #subprocess.call(["pkill", "-f", str(name)]) to use termination coment break
-
                     idx = 0
                 appender(MEGA_STR)
             except MemoryError:
@@ -127,10 +101,7 @@ def mem_cons():
                     timestamp()
                     print("Memory was cleared")
                     break
-                    #subprocess.call(["pkill", "-f", str(name)]) to use termination com
-ent break
-
-
+                    #subprocess.call(["pkill", "-f", str(name)]) to use termination coment break
                 #timestamp()
                 #print("Program has been stopped due to reaching memory limit")
                 #a = []
@@ -139,18 +110,6 @@ ent break
         print("")
         timestamp()
         print("Program has been stopped")
-
-def mem_eat():
-    try:
-        p = Process(target=echo_server)
-        m = Process(target=mem_cons)
-        m.daemon = True
-        p.start()
-        m.start()
-        p.join()
-        m.join()
-    except KeyboardInterrupt:
-        pass
 
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
@@ -187,6 +146,25 @@ def disc_eat():
         timestamp()
         print("The script has been stopped")
 
+
+def multiproc(processes, key):
+        try:
+            timestamp()
+            print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
+            processes_pool = []
+            for i in range(processes):
+                processes_pool.append(Process(target=key, args=(processes,)))
+                processes_pool[i].start()
+            p = Process(target=echo_server)
+            p.start()
+            p.join()
+            processes_pool[i].join()
+        except KeyboardInterrupt:
+            print("")
+            timestamp()
+            print("Program has been stopped")
+
+
 parser = argparse.ArgumentParser(
         description="Universal script for testing CPU, RAM and discspace consumption. \nPlease choose required optional argument.",
         epilog="",formatter_class=argparse.RawTextHelpFormatter)
@@ -198,11 +176,11 @@ args = parser.parse_args()
 
 
 if args.cpu == 'a':
-    cpu_eat(cpu_count()) 
+    multiproc(cpu_count(), cpu_cons) 
 elif args.cpu == 'o':
-    cpu_eat(1)
+    multiproc(1, cpu_cons)
 elif args.memory:
-    mem_eat()
+    multiproc(1, mem_cons)
 elif args.disc:
     disc_eat()
 
