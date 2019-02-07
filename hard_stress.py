@@ -34,15 +34,12 @@ def echo_server():
         connection.listen(10)
         while True:
             current_connection, address = connection.accept()
+            timestamp()
+            print("Remote connection is established")
             while True:
                 data = current_connection.recv(2048)
 
-                if data == 'quit\r\n':
-                    current_connection.shutdown(1)
-                    current_connection.close()
-                    break
-
-                elif data == 'kill\r\n':
+                if data == 'kill\r\n':
                     current_connection.shutdown(1)
                     current_connection.close()
                     flag[data] = 0
@@ -51,7 +48,6 @@ def echo_server():
                 elif data:
                     current_connection.send(data)
                     print data
-
     except KeyboardInterrupt:
         pass
 
@@ -92,7 +88,6 @@ def mem_cons(x):
                         timestamp()
                         print("Memory was cleared")
                         break
-                        #subprocess.call(["pkill", "-f", str(name)]) to use termination coment break
                     idx = 0
                 appender(MEGA_STR)
             except MemoryError:
@@ -107,11 +102,6 @@ def mem_cons(x):
                     timestamp()
                     print("Memory was cleared")
                     break
-                    #subprocess.call(["pkill", "-f", str(name)]) to use termination coment break
-                #timestamp()
-                #print("Program has been stopped due to reaching memory limit")
-                #a = []
-                #break
     except KeyboardInterrupt:
         print("")
         timestamp()
@@ -119,7 +109,7 @@ def mem_cons(x):
 
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
-def disc_eat(x):
+def disc_cons(x):
     write_str = "Full_space"*2048*2048*50  # Consume amount
     try:
         timestamp()
@@ -154,17 +144,16 @@ def disc_eat(x):
 
 
 def multiproc(processes, key):
+    if key == cpu_cons:
+        timestamp()
+        print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
+    else:
         try:
-            timestamp()
-            print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
             processes_pool = []
             for i in range(processes):
                 processes_pool.append(Process(target=key, args=(processes,)))
                 processes_pool[i].start()
-            #p = Process(target=echo_server)
-            #p.start()
             echo_server()
-            #p.join()
             for i in range(processes):
                 processes_pool[i].join()
         except KeyboardInterrupt:
@@ -188,7 +177,7 @@ target_func = {
     'mem': mem_cons,
     'cpu': cpu_cons,
     'cpu1': cpu_cons,
-    'disc': disc_eat
+    'disc': disc_cons
     }[args.mode]
 proc_cnt = 1
 if args.mode == 'cpu':
