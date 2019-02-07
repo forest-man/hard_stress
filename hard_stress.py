@@ -44,7 +44,7 @@ def echo_server(flag):
                     flag['kill'] = 0
                     timestamp()
                     print("The script was remotely killed")
-                    return #exit()
+                    return 
 
                 elif data:
                     current_connection.send(data)
@@ -57,16 +57,11 @@ def cpu_cons(_flag):
     x=4
     try:
         while True:
-            #print _flag
             if 'kill' in _flag:
-               # print("exiting of cpu_cons")
                 break
             else:
                 x ** x
                 x = x + 99999
-        print("")
-        timestamp()
-        print("Cpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
     except KeyboardInterrupt:
         pass
     except IOError:
@@ -76,7 +71,7 @@ def cpu_cons(_flag):
 def mem_cons(_flag):
     x = 4
     timestamp()
-    print("Memory consumption is started...\nPlease use \'ctrl+c\' command to exit.")
+    print("Memory consumption is started...")
     a = []
     idx = 0
     appender = a.append
@@ -87,9 +82,6 @@ def mem_cons(_flag):
                 idx += 1
                 if idx > 10000:
                     if 'kill' in _flag:
-                        print("")
-                        timestamp()
-                        print("Memory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
                         a = []
                         timestamp()
                         print("Memory was cleared")
@@ -97,17 +89,8 @@ def mem_cons(_flag):
                     idx = 0
                 appender(MEGA_STR)
             except MemoryError:
-                timestamp()
-                print("Program is sleeping due to reaching memory limit")
-                time.sleep(0.5)
-                if 'kill' in flag:
-                    print("")
-                    timestamp()
-                    print("Memory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
-                    a = []
-                    timestamp()
-                    print("Memory was cleared")
-                    break
+                continue
+                time.sleep(2)
     except KeyboardInterrupt:
         print("")
         timestamp()
@@ -165,6 +148,7 @@ def multiproc(processes, key):
        # print "TCP Server stopped"
         for i in range(processes):
             processes_pool[i].join()
+        timestamp()
         print "All child processes are stopped"
     except KeyboardInterrupt:
         print("")
