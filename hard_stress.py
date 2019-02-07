@@ -67,6 +67,8 @@ def cpu_cons(x):
         print("Cpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
     except KeyboardInterrupt:
         pass
+    except IOError:
+        pass
 
 
 def mem_cons(x):
@@ -107,6 +109,8 @@ def mem_cons(x):
         print("")
         timestamp()
         print("Program has been stopped")
+    except IOError:
+        pass
 
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
