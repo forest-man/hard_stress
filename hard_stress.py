@@ -174,6 +174,7 @@ parser.add_argument("-m","--mode", help="Select mode (cpu/cpu1/mem/disc)", type=
 args = parser.parse_args()
 
 if args.mode not in ['cpu', 'cpu1', 'mem', 'disc']:
+    parser.print_help()
     print "Unsupported mode:", args.mode
     exit(1)
 
