@@ -14,9 +14,8 @@ import SocketServer
 from argparse import RawTextHelpFormatter
 from multiprocessing import Manager, Pool, Process, cpu_count
 
-manager = Manager()
-flag = manager.dict()
 name = sys.argv[0]
+
 
 class bcolors:
     OKGREEN = '\033[92m'
@@ -26,7 +25,7 @@ def timestamp():
     print(bcolors.OKGREEN+"["+datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'+"]")+bcolors.ENDC),
 
 
-def echo_server():
+def echo_server(flag):
     try:
         connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -39,13 +38,13 @@ def echo_server():
             while True:
                 data = current_connection.recv(2048)
 
-                if data == 'kill\r\n':
+                if data.strip() == 'kill':
                     current_connection.shutdown(1)
                     current_connection.close()
-                    flag[data] = 0
+                    flag['kill'] = 0
                     timestamp()
                     print("The script was remotely killed")
-                    exit()
+                    return #exit()
 
                 elif data:
                     current_connection.send(data)
@@ -54,10 +53,13 @@ def echo_server():
         pass
 
 
-def cpu_cons(x):
+def cpu_cons(_flag):
+    x=4
     try:
         while True:
-            if 'kill' in flag:
+            #print _flag
+            if 'kill' in _flag:
+               # print("exiting of cpu_cons")
                 break
             else:
                 x ** x
@@ -71,7 +73,8 @@ def cpu_cons(x):
         pass
 
 
-def mem_cons(x):
+def mem_cons(_flag):
+    x = 4
     timestamp()
     print("Memory consumption is started...\nPlease use \'ctrl+c\' command to exit.")
     a = []
@@ -83,7 +86,7 @@ def mem_cons(x):
             try:
                 idx += 1
                 if idx > 10000:
-                    if 'kill' in flag:
+                    if 'kill' in _flag:
                         print("")
                         timestamp()
                         print("Memory consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
@@ -149,17 +152,20 @@ def disc_cons(x):
 
 
 def multiproc(processes, key):
+    internal_flag = Manager().dict()
     if key == cpu_cons:
         timestamp()
         print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
     try:
         processes_pool = []
         for i in range(processes):
-            processes_pool.append(Process(target=key, args=(processes,)))
+            processes_pool.append(Process(target=key, args=(internal_flag,)))
             processes_pool[i].start()
-        echo_server()
+        echo_server(internal_flag)
+       # print "TCP Server stopped"
         for i in range(processes):
             processes_pool[i].join()
+        print "All child processes are stopped"
     except KeyboardInterrupt:
         print("")
         timestamp()
