@@ -43,6 +43,8 @@ def echo_server():
                     current_connection.shutdown(1)
                     current_connection.close()
                     flag[data] = 0
+                    timestamp()
+                    print("The script was remotely killed")
                     exit()
 
                 elif data:
