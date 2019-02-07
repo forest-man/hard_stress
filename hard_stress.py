@@ -62,7 +62,6 @@ def cpu_cons(x):
                 x = x + 99999
         print("")
         timestamp()
-        subprocess.call(["pkill", "-f", str(name)])
         print("Cpu consumption was remotely stopped.\nPlease use \'ctrl+c\' command to exit")
     except KeyboardInterrupt:
         pass
@@ -147,19 +146,18 @@ def multiproc(processes, key):
     if key == cpu_cons:
         timestamp()
         print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
-    else:
-        try:
-            processes_pool = []
-            for i in range(processes):
-                processes_pool.append(Process(target=key, args=(processes,)))
-                processes_pool[i].start()
-            echo_server()
-            for i in range(processes):
-                processes_pool[i].join()
-        except KeyboardInterrupt:
-            print("")
-            timestamp()
-            print("Program has been stopped")
+    try:
+        processes_pool = []
+        for i in range(processes):
+            processes_pool.append(Process(target=key, args=(processes,)))
+            processes_pool[i].start()
+        echo_server()
+        for i in range(processes):
+            processes_pool[i].join()
+    except KeyboardInterrupt:
+        print("")
+        timestamp()
+        print("Program has been stopped")
 
 
 parser = argparse.ArgumentParser(
