@@ -189,7 +189,3 @@ if args.mode == 'cpu':
     proc_cnt = cpu_count()
 
 multiproc(proc_cnt, target_func)
-
-if len(sys.argv) == 1:
-    parser.print_help()
-
