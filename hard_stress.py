@@ -100,7 +100,9 @@ def mem_cons(_flag):
 
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
-def disc_cons(x):
+def disc_cons(_flag):
+    x = 4
+    idx = 0
     write_str = "Full_space"*2048*2048*50  # Consume amount
     try:
         timestamp()
@@ -108,6 +110,15 @@ def disc_cons(x):
         with open('eater', "w") as f:
             while True:
                 try:
+                    idx += 1
+                    if idx > 1:
+                        if 'kill' in _flag:
+                            timestamp()
+                            print("Removing 'eater' file...")
+                            os.remove('eater')
+                            #print("eater was removed")
+                            break
+                        idx = 0
                     f.write(write_str)
                     f.flush()
                 except IOError as err:
@@ -138,7 +149,7 @@ def multiproc(processes, key):
     internal_flag = Manager().dict()
     if key == cpu_cons:
         timestamp()
-        print('Running load on CPU\nUtilizing %d core out of %d' % (processes, cpu_count()))
+        print('CPU consumption is started...\nUtilizing %d core out of %d' % (processes, cpu_count()))
     try:
         processes_pool = []
         for i in range(processes):
