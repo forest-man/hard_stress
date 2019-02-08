@@ -9,21 +9,17 @@ import errno
 import socket
 import datetime
 import argparse
-#import subprocess
-#import SocketServer
-#from argparse import RawTextHelpFormatter
 from multiprocessing import Manager, Pool, Process, cpu_count
 
 name = sys.argv[0]
 
-
 class bcolors:
     OKGREEN = '\033[92m'
+    INFOYEL = '\033[93m'
     ENDC = '\033[0m'
 
 def timestamp():
     print(bcolors.OKGREEN+"["+datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'+"]")+bcolors.ENDC),
-
 
 def echo_server(flag):
     try:
@@ -37,7 +33,6 @@ def echo_server(flag):
             print("Remote connection is established")
             while True:
                 data = current_connection.recv(2048)
-
                 if data.strip() == 'kill':
                     current_connection.shutdown(1)
                     current_connection.close()
@@ -45,13 +40,11 @@ def echo_server(flag):
                     timestamp()
                     print("The script was remotely killed")
                     return 
-
                 elif data:
                     current_connection.send(data)
                     print data
     except KeyboardInterrupt:
         pass
-
 
 def cpu_cons(_flag):
     x=4
@@ -66,7 +59,6 @@ def cpu_cons(_flag):
         pass
     except IOError:
         pass
-
 
 def mem_cons(_flag):
     x = 4
@@ -97,7 +89,6 @@ def mem_cons(_flag):
         print("Program has been stopped")
     except IOError:
         pass
-
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' or remote 'kill' command 'eater' will be deleted.
 def disc_cons(_flag):
@@ -139,12 +130,12 @@ def disc_cons(_flag):
         timestamp()
         print("The script has been stopped")
 
-
 def multiproc(processes, key):
     internal_flag = Manager().dict()
     if key == cpu_cons:
         timestamp()
-        print('CPU consumption is started...\nUtilizing %d core out of %d' % (processes, cpu_count()))
+        print('CPU consumption is started...')
+        print(bcolors.INFOYEL + 'Utilizing %d core(s) out of %d'% (processes, cpu_count()) + bcolors.ENDC)
     try:
         processes_pool = []
         for i in range(processes):
@@ -160,11 +151,9 @@ def multiproc(processes, key):
         timestamp()
         print("Program has been stopped")
 
-
 parser = argparse.ArgumentParser(
         description="Universal script for testing CPU, RAM and discspace consumption. \nPlease choose required optional argument.",
         epilog="",formatter_class=argparse.RawTextHelpFormatter)
-
 parser.add_argument("-m","--mode", help="Select mode (cpu/cpu1/mem/disc)", type=str, default=None)
 args = parser.parse_args()
 
