@@ -128,7 +128,7 @@ def disc_cons(_flag):
                         else:
                             continue 
                     else:
-                        raise
+                        break 
     except KeyboardInterrupt:
         os.remove('eater')
         print("")
