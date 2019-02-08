@@ -99,7 +99,7 @@ def mem_cons(_flag):
         pass
 
 
-# When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' 'eater' will be deleted.
+# When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' or remote 'kill' command 'eater' will be deleted.
 def disc_cons(_flag):
     x = 4
     idx = 0
@@ -116,7 +116,6 @@ def disc_cons(_flag):
                             timestamp()
                             print("Removing 'eater' file...")
                             os.remove('eater')
-                            #print("eater was removed")
                             break
                         idx = 0
                     f.write(write_str)
@@ -127,11 +126,7 @@ def disc_cons(_flag):
                         if write_str_len > x:
                             write_str = write_str[:write_str_len/2]
                         else:
-                            break
-                        time.sleep(60)
-                        os.remove('eater')
-                        timestamp()
-                        print("Discspace consumption has been stopped due to reaching disc space limit.\nRemoving 'eater' file...")
+                            continue 
                     else:
                         raise
     except KeyboardInterrupt:
@@ -156,7 +151,6 @@ def multiproc(processes, key):
             processes_pool.append(Process(target=key, args=(internal_flag,)))
             processes_pool[i].start()
         echo_server(internal_flag)
-       # print "TCP Server stopped"
         for i in range(processes):
             processes_pool[i].join()
         timestamp()
