@@ -55,9 +55,7 @@ def cpu_cons(_flag):
             else:
                 x ** x
                 x = x + 99999
-    except KeyboardInterrupt:
-        pass
-    except IOError:
+    except (KeyboardInterrupt, IOError):
         pass
 
 def mem_cons(_flag):
@@ -120,12 +118,8 @@ def disc_cons(_flag):
                             continue 
                     else:
                         break 
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, OSError):
         os.remove('eater')
-        print("")
-        timestamp()
-        print("The script has been stopped")
-    except OSError:
         print("")
         timestamp()
         print("The script has been stopped")
