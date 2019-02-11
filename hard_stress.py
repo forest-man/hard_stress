@@ -148,10 +148,10 @@ def multiproc(processes, key):
 parser = argparse.ArgumentParser(
         description="""Universal script for testing CPU, RAM and discspace consumption. 
         \nPlease choose required mode:
-        'cpu' - for ALL cores consumption 
-        'cpu1' - for ONE core consumption
-        'mem'  - for RAM consumption
-        'disc' - for disc space consumption""",
+        'cpu' - consume 100% CPU of ONE core
+        'cpu1' - consume 100% CPU of ALL cores
+        'mem'  - consume all free RAM on the server
+        'disc' - consume all free disc space on mount""",
             epilog="",formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument("-m","--mode", help="Select mode (cpu/cpu1/mem/disc)", type=str, default=None)
 args = parser.parse_args()
