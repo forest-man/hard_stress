@@ -146,8 +146,13 @@ def multiproc(processes, key):
         print("Program has been stopped")
 
 parser = argparse.ArgumentParser(
-        description="Universal script for testing CPU, RAM and discspace consumption. \nPlease choose required optional argument.",
-        epilog="",formatter_class=argparse.RawTextHelpFormatter)
+        description="""Universal script for testing CPU, RAM and discspace consumption. 
+        \nPlease choose required mode:
+        'cpu' - for ALL cores consumption 
+        'cpu1' - for ONE core consumption
+        'mem'  - for RAM consumption
+        'disc' - for disc space consumption""",
+            epilog="",formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument("-m","--mode", help="Select mode (cpu/cpu1/mem/disc)", type=str, default=None)
 args = parser.parse_args()
 
