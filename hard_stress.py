@@ -148,8 +148,8 @@ def multiproc(processes, key):
 parser = argparse.ArgumentParser(
         description="""Universal script for testing CPU, RAM and discspace consumption. 
         \nPlease choose required mode:
-        'cpu' - consume 100% CPU of ONE core
-        'cpu1' - consume 100% CPU of ALL cores
+        'cpu' - consume 100% CPU of ALL cores
+        'cpu1' - consume 100% CPU of ONE core
         'mem'  - consume all free RAM on the server
         'disc' - consume all free disc space on mount""",
             epilog="",formatter_class=argparse.RawTextHelpFormatter)
