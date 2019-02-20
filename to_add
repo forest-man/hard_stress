@@ -20,5 +20,11 @@ WARN: when CPU consumption is 99.9% and higher, the machine is down!!!!!
 15. Make the timestamps (done)
 16. Make disc cinsumption via trhreads
 ####################################
-17. Kill main script after mem_cons was remotely killed - to speed up memory cleaning
-18. Make another server for remote grep ps ux
+17. Kill main script after mem_cons was remotely killed - to speed up memory cleaning (done)
+### After run ###
+1. Make mem eat faster: eat a first step ~ 10 Gb per step, then (if there is < 10 Gb at all) 5 Gb per step, 2, 1 etc.
+2. Make CPU eat more constant.
+3. Make another server for remote grep ps ux
+4. Change -h message to more readible:
+"-m","--mode", help="Select mode (cpu/cpu1/mem/disc)" needed to be at the top.
+
