@@ -59,9 +59,30 @@ def cpu_cons(_flag):
         pass
 
 def mem_cons(_flag):
-    x = 4
+# Starting stepped consumption n = 10Gib
     timestamp()
     print("Memory consumption is started...")
+    n = 10
+    print(n)
+    list=[]
+    try:
+        while n > 1:
+            if 'kill' in _flag:
+                break
+            else:
+                GB = 1024*1024*1024
+                b = "a" * (n * GB)
+                time.sleep(10)
+                list.append(b)
+                print("Some memory was eaten")
+                n = n/2
+                print(n)
+    except KeyboardInterrupt:
+        print("")
+        timestamp()
+        print("Program has been stopped")
+
+    x = 4
     a = []
     idx = 0
     appender = a.append
