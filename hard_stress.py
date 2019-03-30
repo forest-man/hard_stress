@@ -59,6 +59,7 @@ def cpu_cons(_flag):
         pass
 
 def mem_cons(_flag):
+# need to add memory analyzer hereafter
 # Starting stepped consumption n = 10Gib
     timestamp()
     print("Memory consumption is started...")
