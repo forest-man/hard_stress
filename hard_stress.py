@@ -60,24 +60,24 @@ def cpu_cons(_flag):
 
 def mem_cons(_flag):
 # need to add memory analyzer hereafter
+    mem_st = int(os.popen("free -g | awk 'FNR == 2 {print $2}'").read())
 # Starting stepped consumption n = 10Gib
     timestamp()
     print("Memory consumption is started...")
-    n = 10
-    print(n)
+    print(mem_st)
     list=[]
     try:
-        while n > 1:
+        while mem_st > 2:
             if 'kill' in _flag:
                 break
             else:
                 GB = 1024*1024*1024
-                b = "a" * (n * GB)
+                b = "a" * (mem_st + GB)
                 time.sleep(10)
                 list.append(b)
                 print("Some memory was eaten")
-                n = n/2
-                print(n)
+                mem_st = mem_st/2
+                print(mem_st)
     except KeyboardInterrupt:
         print("")
         timestamp()
