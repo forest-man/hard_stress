@@ -66,7 +66,7 @@ def mem_cons(_flag):
 
     list=[]
     try:
-        while mem_st > 2:
+        while mem_st > 1:
             if 'kill' in _flag:
                 break
             else:
