@@ -75,7 +75,6 @@ def mem_cons(_flag):
                 time.sleep(5)
                 list.append(b)
                 mem_st = mem_st/2
-                print('Memory left: ' + str(mem_st)+'GB')
     except KeyboardInterrupt:
         print("")
         timestamp()
