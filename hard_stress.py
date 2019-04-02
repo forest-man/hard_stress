@@ -63,7 +63,6 @@ def mem_cons(_flag):
     gb_count = 512
     timestamp()
     print("Memory consumption is started...")
-    print('Total memory size: ' + str(mem_st)+'GB')
     a=[]
     try:
         while True:
