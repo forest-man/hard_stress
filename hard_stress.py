@@ -59,54 +59,35 @@ def cpu_cons(_flag):
         pass
 
 def mem_cons(_flag):
-    mem_st = int(os.popen("free -g | awk 'FNR == 2 {print $2}'").read())
+    mem_st = int(os.popen("free -g | awk 'FNR == 2 {print $7}'").read())
+    gb_count = 512
     timestamp()
-    print("Aggressive memory consumption is started...")
+    print("Memory consumption is started...")
     print('Total memory size: ' + str(mem_st)+'GB')
-
-    list=[]
-    try:
-        while mem_st > 1:
-            if 'kill' in _flag:
-                break
-            else:
-                GB = 1024*1024*1024
-                b = "a" * (mem_st + GB)
-                time.sleep(5)
-                list.append(b)
-                mem_st = mem_st/2
-    except KeyboardInterrupt:
-        print("")
-        timestamp()
-        print("Program has been stopped")
-    timestamp()
-    print("Delicate memory consumption is started...")
-    x = 4
-    a = []
-    idx = 0
-    appender = a.append
-    MEGA_STR = 'F' * (10 ** 4 * x)
+    a=[]
     try:
         while True:
             try:
-                idx += 1
-                if idx > 10000:
-                    if 'kill' in _flag:
-                        a = []
-                        timestamp()
-                        print("Memory was cleared")
-                        break
-                    idx = 0
-                appender(MEGA_STR)
-            except MemoryError:
-                continue
+                if 'kill' in _flag:
+                    break
+                else:
+                    GB = gb_count*gb_count*gb_count
+                    b = "a" * (1 * GB)
+                    time.sleep(0)
+                    a.append(b)
+            except (MemoryError, OSError):
                 time.sleep(2)
+                continue
+    except (MemoryError, OSError):
+        pass
+        #time.sleep(0.1)
+    except IOError:
+        pass
     except KeyboardInterrupt:
         print("")
         timestamp()
         print("Program has been stopped")
-    except IOError:
-        pass
+
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' or remote 'kill' command 'eater' will be deleted.
 def disc_cons(_flag):
