@@ -6,10 +6,10 @@ Hard Stress tool (HS) is intended to perform High rate resource utilization (CPU
 ### Usage
 
     Select required -m, --mode:
-	    ‘cpu’ - for ALL cores consumption
-	    ‘cpu1’ - for ONE core consumption
-	    'mem'  - consume all free RAM on the server
-	    'disc' - consume all free disc space on mount
+	    ‘-m cpu’ - for ALL cores consumption
+	    ‘-m cpu1’ - for ONE core consumption
+	    '-m mem'  - consume all free RAM on the server
+	    '-m disc' - consume all free disc space on mount
 For instance, if you want to consume all free RAM you need to run:
 
     ./hard_stress.py -m mem
