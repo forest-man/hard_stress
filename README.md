@@ -45,5 +45,12 @@ After the connection was established proper info message will appear in HS inter
 
 Then you can send **kill** command from remote host to instantly stop all consuming scripts and main HS. 
 
+### Troubleshooting tips
+If you encounter with issue like: 
+
+    ImportError: No module named site
+    
+You can perform **unset PYTHONHOME** command.
+
 --------------------------------------------------------------------
 Due to HS's beta status any feedback or notes will be welcomed. :+1:
