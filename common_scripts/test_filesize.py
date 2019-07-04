@@ -12,6 +12,7 @@ def disc_cons():
     write_str = "Full_space"*20*20*5  # Consume amount
     try:
         print("Discspace consumption is started...\nPlease use \'ctrl+c\' command to exit.")
+        for i in
         with open('eater', "w") as f:
             while True:
                 a = os.path.getsize('eater')
@@ -20,7 +21,7 @@ def disc_cons():
                     idx += 1
                     if idx > 1:
                         #if a > 108000000000: for 100gb
-                        if a > 5368709120:
+                        if a > 1080000000:
                             print("Removing 'eater' file...")
                             #os.remove('eater')
                             break
