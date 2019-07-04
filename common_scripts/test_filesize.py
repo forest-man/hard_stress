@@ -6,20 +6,20 @@ a = os.path.getsize('test_arg.py')
 print(a >> 30)
 print (5368709120 >> 30 )
 
-def disc_cons(_flag):
+def disc_cons():
     x = 4
     idx = 0
-    write_str = "Full_space"*2048*2048*50  # Consume amount
+    write_str = "Full_space"*20*20*5  # Consume amount
     try:
-        timestamp()
         print("Discspace consumption is started...\nPlease use \'ctrl+c\' command to exit.")
         with open('eater', "w") as f:
             while True:
+                a = os.path.getsize('eater')
+                print(a)
                 try:
                     idx += 1
                     if idx > 1:
-                        if 'kill' in _flag:
-                            timestamp()
+                        if a > 5368709120:
                             print("Removing 'eater' file...")
                             os.remove('eater')
                             break
@@ -38,5 +38,6 @@ def disc_cons(_flag):
     except (KeyboardInterrupt, OSError):
         os.remove('eater')
         print("")
-        timestamp()
         print("The script has been stopped")
+
+disc_cons()
