@@ -19,9 +19,10 @@ def disc_cons():
                 try:
                     idx += 1
                     if idx > 1:
+                        #if a > 108000000000: for 100gb
                         if a > 5368709120:
                             print("Removing 'eater' file...")
-                            os.remove('eater')
+                            #os.remove('eater')
                             break
                         idx = 0
                     f.write(write_str)
