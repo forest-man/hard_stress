@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#just test
 import os
 #os.pwd
 a = os.path.getsize('test_arg.py')
