@@ -104,8 +104,7 @@ def disc_cons(_flag):
                     try:
                         idx += 1
                         if idx > 1:
-                            if a > 1080000000: #aprx. 1,4 Gb
-                                print('Chunck ' + str(i) + " is done" )
+                            if a > 107000000000: #aprx. 10 Gb
                                 break
                             if 'kill' in _flag:
                                 os.system('rm -rf eater*')

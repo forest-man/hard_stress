@@ -2,6 +2,7 @@
 
 # Developed by MVelichko
 
+import re
 import os
 import sys
 import time
@@ -39,7 +40,7 @@ def echo_server(flag):
                     flag['kill'] = 0
                     timestamp()
                     print("The script was remotely killed")
-                    return 
+                    return
                 elif data:
                     current_connection.send(data)
                     print data
@@ -92,37 +93,39 @@ def mem_cons(_flag):
 def disc_cons(_flag):
     x = 4
     idx = 0
-    write_str = "Full_space"*2048*2048*50  # Consume amount
+    write_str = "Full_space_with_me"*(2048+2048+2048)*480  # Consume amount
     try:
         timestamp()
         print("Discspace consumption is started...\nPlease use \'ctrl+c\' command to exit.")
-        with open('eater', "w") as f:
-            while True:
-                try:
-                    idx += 1
-                    if idx > 1:
-                        if 'kill' in _flag:
-                            timestamp()
-                            print("Removing 'eater' file...")
-                            os.remove('eater')
-                            break
-                        idx = 0
-                    f.write(write_str)
-                    f.flush()
-                except IOError as err:
-                    if err.errno == errno.ENOSPC:
-                        write_str_len = len(write_str)
-                        if write_str_len > x:
-                            write_str = write_str[:write_str_len/2]
+        for i in xrange(sys.maxint):
+            with open('eater' + str(i), "w") as f:
+                while True:
+                    a = os.path.getsize('eater' + str(i))
+                    try:
+                        idx += 1
+                        if idx > 1:
+                            if a > 107000000000: #aprx. 10 Gb
+                                break
+                            if 'kill' in _flag:
+                                os.system('rm -rf eater*')
+                                idx = 0
+                            f.write(write_str)
+                            f.flush()
+
+                    except IOError as err:
+                        if err.errno == errno.ENOSPC:
+                            write_str_len = len(write_str)
+                            if write_str_len > x:
+                                write_str = write_str[:write_str_len/2]
+                            else:
+                                continue
                         else:
-                            continue 
-                    else:
-                        break 
+                            break
     except (KeyboardInterrupt, OSError):
-        os.remove('eater')
-        print("")
         timestamp()
-        print("The script has been stopped")
+        print("The script has been stopped. Deleting eater file(s)...")
+        os.system('rm -rf eater*')
+        print("")
 
 def multiproc(processes, key):
     internal_flag = Manager().dict()
@@ -146,7 +149,7 @@ def multiproc(processes, key):
         print("Program has been stopped")
 
 parser = argparse.ArgumentParser(
-        description="""Universal script for testing CPU, RAM and discspace consumption. 
+        description="""Universal script for testing CPU, RAM and discspace consumption.
         \nPlease choose required mode:
         '-m cpu'  - consume 100% CPU of ALL cores
         '-m cpu1' - consume 100% CPU of ONE core
