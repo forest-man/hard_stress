@@ -93,7 +93,7 @@ def mem_cons(_flag):
 def disc_cons(_flag):
     x = 4
     idx = 0
-    write_str = "Full_space"*1024*1024*4  # Consume amount
+    write_str = "Full_space_with_me"*(2048+2048+2048)*480  # Consume amount
     try:
         timestamp()
         print("Discspace consumption is started...\nPlease use \'ctrl+c\' command to exit.")
