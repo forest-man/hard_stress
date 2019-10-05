@@ -93,7 +93,7 @@ def mem_cons(_flag):
 def disc_cons(_flag):
     x = 4
     idx = 0
-    write_str = "Full_space"*2048*2048*5  # Consume amount
+    write_str = "Full_space"*1024*1024*4  # Consume amount
     try:
         timestamp()
         print("Discspace consumption is started...\nPlease use \'ctrl+c\' command to exit.")
@@ -106,16 +106,13 @@ def disc_cons(_flag):
                         if idx > 1:
                             if a > 1080000000: #aprx. 1,4 Gb
                                 print('Chunck ' + str(i) + " is done" )
-                                #os.remove('eater')
                                 break
                             if 'kill' in _flag:
-                                timestamp()
-                                print("Removing 'eater' file...")
-                                os.remove(f)
-                                break
-                            idx = 0
-                        f.write(write_str)
-                        f.flush()
+                                os.system('rm -rf eater*')
+                                idx = 0
+                            f.write(write_str)
+                            f.flush()
+
                     except IOError as err:
                         if err.errno == errno.ENOSPC:
                             write_str_len = len(write_str)
@@ -126,10 +123,10 @@ def disc_cons(_flag):
                         else:
                             break
     except (KeyboardInterrupt, OSError):
-        os.remove('eater')
-        print("")
         timestamp()
-        print("The script has been stopped")
+        print("The script has been stopped. Deleting eater file(s)...")
+        os.system('rm -rf eater*')
+        print("")
 
 def multiproc(processes, key):
     internal_flag = Manager().dict()
