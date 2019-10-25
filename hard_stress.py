@@ -9,7 +9,6 @@ import time
 import errno
 import socket
 import datetime
-# import argparse
 import optparse
 from multiprocessing import Manager, Pool, Process, cpu_count
 
@@ -30,7 +29,7 @@ def echo_server(flag):
         connection.bind(('0.0.0.0', 12321))
         connection.listen(10)
         while True:
-            current_connection, address = connection.accept()
+            current_connection, _ = connection.accept()
             timestamp()
             print("Remote connection is established")
             while True:
@@ -61,7 +60,6 @@ def cpu_cons(_flag):
         pass
 
 def mem_cons(_flag):
-    mem_st = int(os.popen("free -g | awk 'FNR == 2 {print $7}'").read())
     gb_count = 512
     timestamp()
     print("Memory consumption is started...")
@@ -155,7 +153,7 @@ def main():
     options.add_option('-d', '--disc', action="store_true", default=False, help='consume all free disc space on mount')
     options.add_option('-c', '--cpu', type='int', default=-1, help='consume 100% CPU for specified number of cores(please set it to 0, to consume all available cores)')
 
-    opts, args = options.parse_args()
+    opts, - = options.parse_args()
     proc_cnt = 1
     if opts.cpu>=0:
         if opts.cpu == 0:
