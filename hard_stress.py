@@ -153,7 +153,7 @@ def main():
     options.add_option('-d', '--disc', action="store_true", default=False, help='consume all free disc space on mount')
     options.add_option('-c', '--cpu', type='int', default=-1, help='consume 100% CPU for specified number of cores(please set it to 0, to consume all available cores)')
 
-    opts, - = options.parse_args()
+    opts, _ = options.parse_args()
     proc_cnt = 1
     if opts.cpu>=0:
         if opts.cpu == 0:
