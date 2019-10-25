@@ -9,7 +9,8 @@ import time
 import errno
 import socket
 import datetime
-import argparse
+# import argparse
+import optparse
 from multiprocessing import Manager, Pool, Process, cpu_count
 
 name = sys.argv[0]
@@ -148,30 +149,28 @@ def multiproc(processes, key):
         timestamp()
         print("Program has been stopped")
 
-parser = argparse.ArgumentParser(
-        description="""Universal script for testing CPU, RAM and discspace consumption.
-        \nPlease choose required mode:
-        '-m cpu'  - consume 100% CPU of ALL cores
-        '-m cpu1' - consume 100% CPU of ONE core
-        '-m mem'  - consume all free RAM on the server
-        '-m disc' - consume all free disc space on mount""",
-            epilog="",formatter_class=argparse.RawTextHelpFormatter)
-parser.add_argument("-m","--mode", help="Select mode (cpu/cpu1/mem/disc)", type=str, default=None)
-args = parser.parse_args()
+def main():
+    options = optparse.OptionParser(usage='%prog [options]', description='Universal script for testing CPU, RAM and discspace consumption')
+    options.add_option('-m', '--memory', action="store_true", default=False, help='consume all free RAM on the server')
+    options.add_option('-d', '--disc', action="store_true", default=False, help='consume all free disc space on mount')
+    options.add_option('-c', '--cpu', type='int', default=-1, help='consume 100% CPU for specified number of cores(please set it to 0, to consume all available cores)')
 
-if args.mode not in ['cpu', 'cpu1', 'mem', 'disc']:
-    parser.print_help()
-    print "Unsupported mode:", args.mode
-    exit(1)
+    opts, args = options.parse_args()
+    proc_cnt = 1
+    if opts.cpu>=0:
+        if opts.cpu == 0:
+            proc_cnt = cpu_count()
+        else:
+            proc_cnt = opts.cpu
+        target_func = cpu_cons
+    elif opts.memory:
+        target_func = mem_cons
+    elif opts.disc:
+        target_func = disc_cons
+    else:
+        print("Unsupported mode ...")
+        sys.exit()
+    multiproc(proc_cnt, target_func)
 
-target_func = {
-    'mem': mem_cons,
-    'cpu': cpu_cons,
-    'cpu1': cpu_cons,
-    'disc': disc_cons
-    }[args.mode]
-proc_cnt = 1
-if args.mode == 'cpu':
-    proc_cnt = cpu_count()
-
-multiproc(proc_cnt, target_func)
+if __name__ == '__main__':
+    sys.exit(main())
