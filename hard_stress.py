@@ -24,6 +24,7 @@ def timestamp():
 
 def echo_server(flag):
     try:
+        port = 12321
         connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         connection.bind(('0.0.0.0', 12321))
@@ -47,7 +48,10 @@ def echo_server(flag):
     except KeyboardInterrupt:
         pass
 
-def cpu_cons(_flag):
+    except socket.error:
+        port = port + 1
+
+def cpu_cons(_flag, mark):
     x=4
     try:
         while True:
@@ -56,13 +60,18 @@ def cpu_cons(_flag):
             else:
                 x ** x
                 x = x + 99999
+                #x = 1 # Slow consumption for tests
     except (KeyboardInterrupt, IOError):
         pass
 
-def mem_cons(_flag):
+def mem_cons(_flag, mark):
     gb_count = 512
+    #gb_count = 1 # Slow consumption for tests
     timestamp()
-    print("Memory consumption is started...")
+    if mark =='single':
+        print("Memory consumption is started...")
+    else:
+        print("ComboMode is started...")
     a=[]
     try:
         while True:
@@ -83,19 +92,26 @@ def mem_cons(_flag):
     except IOError:
         pass
     except KeyboardInterrupt:
-        print("")
-        timestamp()
-        print("Program has been stopped")
+        if mark == 'single':
+            print("")
+            timestamp()
+            print("Program has been stopped")
+        else:
+            pass
 
 
 # When consumption is started a file named 'eater' is created in current directory and started to growing. After catching 'KeyboardInterrupt' or remote 'kill' command 'eater' will be deleted.
-def disc_cons(_flag):
+def disc_cons(_flag, mark):
     x = 4
     idx = 0
     write_str = "Full_space_with_me"*(2048+2048+2048)*480  # Consume amount
+    #write_str = "a"*1 # Slow consumption for tests
     try:
-        timestamp()
-        print("Discspace consumption is started...\nPlease use \'ctrl+c\' command to exit.")
+        if mark == 'single':
+            timestamp()
+            print("Discspace consumption is started...\nPlease use \'ctrl+c\' command to exit.")
+        else:
+            pass
         for i in xrange(sys.maxint):
             with open('eater' + str(i), "w") as f:
                 while True:
@@ -122,12 +138,36 @@ def disc_cons(_flag):
                             break
     except (KeyboardInterrupt, OSError):
         timestamp()
-        print("The script has been stopped. Deleting eater file(s)...")
+        if mark == 'single':
+            print("The script has been stopped. Deleting eater file(s)...")
+        else:
+            pass
         os.system('rm -rf eater*')
         print("")
 
+
+def all_cons(_flag, stub):
+    mark = 'all'
+    try:
+        cpu = Process(target=cpu_cons, args=(internal_flag, mark,))
+        mem = Process(target=mem_cons, args=(internal_flag, mark,))
+        disc = Process(target=disc_cons, args=(internal_flag, mark,))
+        cpu.start()
+        mem.start()
+        disc.start()
+        echo_server(internal_flag)
+        cpu.join()
+        disc.join()
+        mem.join()
+
+    except KeyboardInterrupt:
+        pass
+
+
 def multiproc(processes, key):
+    global internal_flag
     internal_flag = Manager().dict()
+    mark = 'single'
     if key == cpu_cons:
         timestamp()
         print('CPU consumption is started...')
@@ -135,7 +175,7 @@ def multiproc(processes, key):
     try:
         processes_pool = []
         for i in range(processes):
-            processes_pool.append(Process(target=key, args=(internal_flag,)))
+            processes_pool.append(Process(target=key, args=(internal_flag, mark,)))
             processes_pool[i].start()
         echo_server(internal_flag)
         for i in range(processes):
@@ -152,6 +192,7 @@ def main():
     options.add_option('-m', '--memory', action="store_true", default=False, help='consume all free RAM on the server')
     options.add_option('-d', '--disc', action="store_true", default=False, help='consume all free disc space on mount')
     options.add_option('-c', '--cpu', type='int', default=-1, help='consume 100% CPU for specified number of cores(please set it to 0, to consume all available cores)')
+    options.add_option('-a', '--all', action="store_true", default=False, help='ComboMode run all modes simultaneously')
 
     opts, _ = options.parse_args()
     proc_cnt = 1
@@ -165,6 +206,8 @@ def main():
         target_func = mem_cons
     elif opts.disc:
         target_func = disc_cons
+    elif opts.all:
+        target_func = all_cons
     else:
         print("Unsupported mode ...")
         sys.exit()
