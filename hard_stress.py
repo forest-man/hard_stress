@@ -66,6 +66,7 @@ def cpu_cons(_flag, mark):
 
 def mem_cons(_flag, mark):
     gb_count = 512
+    GB = gb_count*gb_count*gb_count
     #gb_count = 1 # Slow consumption for tests
     timestamp()
     if mark =='single':
@@ -79,9 +80,7 @@ def mem_cons(_flag, mark):
                 if 'kill' in _flag:
                     break
                 else:
-                    GB = gb_count*gb_count*gb_count
                     b = "a" * (1 * GB)
-                    time.sleep(0)
                     a.append(b)
             except (MemoryError, OSError):
                 time.sleep(2)
