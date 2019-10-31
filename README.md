@@ -16,6 +16,7 @@ Options:
   -d, --disc         consume all free disc space on mount
   -c CPU, --cpu=CPU  consume 100% CPU for specified number of cores(please set
                      it to 0, to consume all available cores)
+  -a, --all          ComboMode - run all modes simultaneously
 ```
 
 
